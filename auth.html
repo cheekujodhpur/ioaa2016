@@ -71,6 +71,10 @@
 			socket.on('syn-err',function(){
 				$("#form-auth-pass").parent().addClass("has-error");
 			});
+            
+            socket.on('syn-err-mult', function(){
+                alert("You are already logged in from another system. Please logout and try again.");
+            });
 
 			socket.on('fin',function(){
 				window.location = "/";

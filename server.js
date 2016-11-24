@@ -1418,18 +1418,26 @@ io.on('connection',function(socket)
 		    {
                 if(typeof items[0]!=="undefined")
                 {
-                    var truePass = items[0].pass;
-                    if(truePass == pass)
+                    if(items[0].logged==false)
                     {
-                
-                        collection.update({"user":user},{$set:{"logged":true,"ip":ip}},function(err,result){});
-                        socket.emit('fin');
-                        console.log("'fin' signal emitted from server in response to " + ip.toString());
+                        var truePass = items[0].pass;
+                        if(truePass == pass)
+                        {
+                    
+                            collection.update({"user":user},{$set:{"logged":true,"ip":ip}},function(err,result){});
+                            socket.emit('fin');
+                            console.log("'fin' signal emitted from server in response to " + ip.toString());
+                        }
+                        else
+                        {
+                            socket.emit('syn-err');
+                            console.log("'syn-err' signal emitted from server in response to " + ip.toString());
+                        }
                     }
                     else
                     {
-                        socket.emit('syn-err');
-                        console.log("'syn-err' signal emitted from server in response to " + ip.toString());
+                        socket.emit('syn-err-mult');
+                        console.log("'syn-err-mult' signal emitted from server in response to " + ip.toString());
                     }
                 }
 			    else
@@ -1933,6 +1941,46 @@ io.on('connection',function(socket)
         });
     }); 
     //feedback END
+    
+    //logout START
+	socket.on('end',function()
+    {
+		
+        if(socket.handshake.address != null)
+        {
+            var ip = socket.handshake.address.toString();
+        }
+        else
+        {
+            console.log("Null IP Error in io.on connection.Carry on");
+            return;
+        }
+		console.log("'end' signal received from " + ip.toString());
+		MongoClient.connect("mongodb://localhost:27017/test",function(err,db)
+        {
+		    if(err)
+		    {
+			    console.log(err);
+			    return 0;
+		    }
+            console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip.toString());
+		    var collection = db.collection('users');
+            /*
+            The ip of the user need not be checked of its existence in the database
+            as the user could only have logged in when he was in the database.
+
+            For security purposes,it seems however practical to ensure this redundancy.
+            */
+		    collection.find({"ip":ip}).toArray(function(err,items)
+		    {
+		        collection.update({"ip":ip},{$set:{"ip":ip,"logged":false}},function(err,result){});
+		    });
+            //send the end acknowleged signal
+            socket.emit('end-ack');
+		    console.log("'end-ack' signal emitted from server in response to " + ip.toString());
+		});
+	});
+    //logout END
 });
 app.use("/uploads/ayush/",express.static(__dirname + "/uploads/ayush/"));console.log("File download enabled for /uploads/ayush/");
 app.use("/uploads/sandesh/",express.static(__dirname + "/uploads/sandesh/"));console.log("File download enabled for /uploads/sandesh/");
