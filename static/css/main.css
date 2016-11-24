@@ -1,0 +1,225 @@
+#marksheet_table td
+{
+    width:150px;
+    border:solid 1px lightgrey;
+    padding:6px;
+}
+
+.tab-pane
+{
+    overflow-x:auto;
+}
+
+.navbar-brand > img
+{
+    width:350px;
+}
+
+.table
+{
+	word-break:break-all;
+    table-layout:fixed;
+    width:100%;
+}
+
+#document
+{
+    width:70%;
+}
+
+#sidebar-wrapper
+{
+    width:19%;
+    position:absolute;
+    right:20px;
+    top:220px;
+}
+
+.left{float:left;}
+.right{float:right;}
+.clear{clear:both;}
+
+.nav
+{
+	position:relative;
+	top:-65px;
+	left:23%;
+	z-index:2;
+	width:50%;
+}
+
+#out-button
+{
+	position:relative;
+	top:15px;
+}
+
+#form-auth,#form-chpass
+{
+	width:300px;
+	margin:10px auto;
+	position:relative;
+}
+
+#form-feedback
+{
+	width:300px;
+	position:relative;
+}
+
+#form-auth-submit
+{
+	width:100px;
+	margin:0 auto;
+}
+
+#sp-header-wrapper
+{
+	background-image:linear-gradient(to bottom,#669bcc,#FFF);
+	height:150px;
+	position:relative;
+	z-index:1;
+}
+
+#tifr-mast
+{
+	margin-right:10px;
+}
+
+#tifr-logo
+{
+	float:right;
+	margin-left:10px;
+}
+
+#hbc-tifr
+{
+	float:right;
+	text-align:right;
+	line-height:1.2em;
+}
+
+#sp-footer-wrapper
+{	
+	position:fixed;
+	bottom:0px;
+	width:100%;
+	height:auto;
+	background-color:#2d5c88;
+}
+
+#sp-footer-wrapper .container
+{
+	font-size:14px;
+	color:white;
+	padding:0px 10px;
+}
+
+#sp-footer-wrapper a:not(.btn)
+{
+	color:lightyellow;
+}
+
+#tifr-logo
+{
+	float:right;
+	margin-left:10px;
+}
+
+.tab-content
+{
+	position:relative;
+	top:-40px;
+	padding:0px 25px;
+}
+
+#option input
+{
+	display:inline;
+	width:auto;
+	border-top-right-radius:0px;
+	border-bottom-right-radius:0px;
+}
+
+.remove-me
+{
+	border-top-left-radius:0px;
+	border-bottom-left-radius:0px;
+}
+
+.add-more
+{
+	margin-left:-5px;
+}
+
+.add-more,.remove-me
+{
+	position:relative;
+	top:-1px;
+}
+
+#timer
+{
+	color:red;
+	font-size:22px;
+}
+
+#vote_count
+{
+    width:100px;
+}
+
+#option_name
+{
+    width:300px;
+}
+
+#bar
+{
+    display:inline-block;
+}
+
+.bar_red
+{
+    background:#FF0000;
+}
+
+.bar_green
+{
+    background:#28E246;
+}
+
+#bar_container
+{
+    text-align:left;
+    display:inline-block;
+    width:516px;
+}
+
+#graph
+{
+    width:916px;
+}
+
+#graph_table
+{
+    text-align:center;
+}
+
+#left-opts,#right-opts
+{
+   width:40%;
+   margin:10px;
+   padding:10px;
+   word-wrap:break-word;
+}
+
+#message-board tr:last-child
+{
+    font-weight:bold;
+}
+
+.prcheck
+{
+    width:50px;
+}

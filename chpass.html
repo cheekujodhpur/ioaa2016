@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset = "utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Change Password</title>
+
+		<!--Bootstrap-->
+		<link href = "static/css/bootstrap.min.css" rel = "stylesheet" />
+		<!!--Custom CSS-->
+        <link href = "static/css/main.css" rel = "stylesheet" />
+        
+        <link href="/media/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <link href="/media/favicon.ico" rel="icon" type="image/x-icon" />
+    </head>
+	<body>
+		<div id = "sp-header-wrapper" class = "navbar navbar-defaul navbar-fixed-top">
+			<div class = "container-fluid">
+				<div class = "navbar-header">
+					<a class="navbar-brand" href = "http://www.ioaa2016.in">
+						<img alt="logo" src = "media/ioaa-logo.png" />
+					</a>
+				</div>
+			</div>
+			<div id = "tifr-mast">
+				<div id = "tifr-logo"><img alt="tifr-logo" src = "/media/tifr-logo-s.png" /></div>
+				<div id = "hbc-tifr">
+					<div id = "hbc">Homi Bhabha Centre for Education</div>
+					<div id = "tifr">Tata Institute of Fundamental Research</div>
+				</div>
+			</div>
+		</div>
+		<div id = "document" style = "width:100%">
+            <form id="form-chpass">
+                <div class="chpass-group">
+					<label for="oldpass" class = "control-label">Old Password</label>
+					<input type = "password" name="oldpass" class="form-control" id = "form-chpass-oldpass" /><br />
+				</div>
+				<div class="chpass-group">
+					<label for="newpass" class = "control-label">New Password</label>
+					<input type = "password" name="newpass" class="form-control" id = "form-chpass-newpass" /><br />
+				</div>
+				<div class="chpass-group">
+					<label for="newpassre" class = "control-label">Re-enter New Password</label>
+					<input type = "password" name="newpassre" class="form-control" id = "form-chpass-newpassre" /><br />
+				</div>
+
+                <div id = "form-chpass-submit"> 
+				    <table style="table-layout:fixed;width:100%;text-align:center">
+                        <col style="width:50%">
+                        <col style="width:50%">
+                        <tr>    
+                            <td><button type="submit" class="btn btn-primary">Confirm</button></td>
+                            <td><button class="btn btn-default" id="back-button" >Back</button></td>
+                        </tr>
+                    </table>
+                </div>
+			</form>
+		</div>
+		<footer id="sp-footer-wrapper" style="bottom:0px;">
+                	<div class="container">
+                        <div class="row-fluid" id="footer">
+                             <div id="sp-footer1" class="span6" style="text-align:center">
+                                 <span>Copyright &copy; Homi Bhabha Centre for Science Education, TIFR</span>
+                                 <br /><span>Mumbai - India </span> 
+                             </div>
+                         </div>
+                	</div>
+        </footer>   	
+		<!-- jQuery -->
+		<script src = "static/js/jquery.min.js"></script>
+		<script src = "static/js/bootstrap.min.js"></script>
+		<script src = "/socket.io/socket.io.js"></script>
+		<script>
+			$(document).ready(function () 
+            {
+                $("#form-chpass-oldpass").focus(); 
+            });
+            $("#back-button").click(function()
+            {
+                window.location = '/';
+            });
+            var socket = io();
+
+			socket.on('chpass-err',function(){
+				$("#form-chpass-oldpass").parent().addClass("has-error");
+			});
+
+			socket.on('chpass-fin',function(){
+				window.location = "/";
+			});
+			
+			$("#form-chpass").submit(function(){
+				$("#form-chpass-oldpass").parent().removeClass("has-error");
+				$("#form-chpass-newpassre").parent().removeClass("has-error");	
+				$("#form-chpass-newpass").parent().removeClass("has-error");	
+				if($("#form-chpass-newpass").val()!=$("#form-chpass-newpassre").val())
+				{
+					$("#form-chpass-newpassre").parent().addClass("has-error");	
+					return false;
+				}
+				if($("#form-chpass-newpass").val()==$("form-chpass-oldpass").val())
+				{
+					$("#form-chpass-newpass").parent().addClass("has-error");
+					return false;
+				}
+				socket.emit('chpass',$("#form-chpass-oldpass").val(),$("#form-chpass-newpass").val());
+				$("#form-chpass-oldpass").val('');
+				$("#form-chpass-newpass").val('');
+				$("#form-chpass-newpassre").val('');
+				return false;
+			});
+		</script>
+	</body>
+</html>
