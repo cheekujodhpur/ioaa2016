@@ -1,3 +1,4 @@
 *.sw*
 uploads/*
 downloads/*
+tmp/*
