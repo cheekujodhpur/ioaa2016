@@ -59,190 +59,45 @@
                         <col style="width:50%"> 
                         <col style="width:50%"> 
 			<thead>
-                <!-- Theory Meeting -->
-                <tr>
-                    <th>Table of Constants Upload</th>
-                    <th>Theory</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td id = "TOC_form">
-                        <form id        =  "upload_form"
-                            enctype   =  "multipart/form-data"
-                            action    =  "/uploadedTOC"
-                            method    =  "post"
-                        >
-                        <div style="position:relative;">
-                                    <a class='btn btn-default' href='javascript:;'>
-                                        Choose File...
-                                        <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' id = "file_upload_TOC" name="user_file" size="40"  onchange='$("#upload-file-info_TOC").html($(this).val().replace("C:\\fakepath\\","")) ;'>
-                                    </a>
-                                    &nbsp;
-                                   <span class='label label-info' id="upload-file-info_TOC"></span>
-                         </div>
-                        <input class = "btn btn-default" type="submit" value="Upload File" name="submit" onclick = 'return emptyfile_check_TOC();'/>
-                        </form>
-                     </td>
-                    <td id = "T_form">
-                        <form id        =  "upload_form"
-                            enctype   =  "multipart/form-data"
-                            action    =  "/uploadedT"
-                            method    =  "post"
-                        >
-                        <div style="position:relative;">
-                                    <a class='btn btn-default' href='javascript:;'>
-                                        Choose File...
-                                        <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' id = "file_upload_T" name="user_file" size="40"  onchange='$("#upload-file-info_T").html($(this).val().replace("C:\\fakepath\\","")) ;'>
-                                    </a>
-                                    &nbsp;
-                                   <span class='label label-info' id="upload-file-info_T"></span>
-                         </div>
-                        <input class = "btn btn-default" type="submit" value="Upload File" name="submit" onclick = 'return emptyfile_check_T();'/>
-                        </form>
-                     </td>
-                </tr>
-            </tbody>
-
-			<thead>
-                <!-- Data Meeting -->
-                <tr>
-                    <th>Table of Constants Upload</th>
-                    <th>Data</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td id = "TOC_form">
-                        <form id        =  "upload_form"
-                            enctype   =  "multipart/form-data"
-                            action    =  "/uploadedTOC"
-                            method    =  "post"
-                        >
-                        <div style="position:relative;">
-                                    <a class='btn btn-default' href='javascript:;'>
-                                        Choose File...
-                                        <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' id = "file_upload_TOC" name="user_file" size="40"  onchange='$("#upload-file-info_TOC").html($(this).val().replace("C:\\fakepath\\","")) ;'>
-                                    </a>
-                                    &nbsp;
-                                   <span class='label label-info' id="upload-file-info_TOC"></span>
-                         </div>
-                        <input class = "btn btn-default" type="submit" value="Upload File" name="submit" onclick = 'return emptyfile_check_TOC();'/>
-                        </form>
-                     </td>
-                    <td id = "D_form">
-                        <form id        =  "upload_form"
-                            enctype   =  "multipart/form-data"
-                            action    =  "/uploadedD"
-                            method    =  "post"
-                        >
-                        <div style="position:relative;">
-                                    <a class='btn btn-default' href='javascript:;'>
-                                        Choose File...
-                                        <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' id = "file_upload_D" name="user_file" size="40"  onchange='$("#upload-file-info_D").html($(this).val().replace("C:\\fakepath\\","")) ;'>
-                                    </a>
-                                    &nbsp;
-                                   <span class='label label-info' id="upload-file-info_D"></span>
-                         </div>
-                        <input class = "btn btn-default" type="submit" value="Upload File" name="submit" onclick = 'return emptyfile_check_D();'/>
-                        </form>
-                     </td>
-                </tr>
-            </tbody>
-
-            <thead>
-                <!-- Observation and Data Meeting -->
-                <tr>
-                    <th>Observation 1</th>
-                    <th>Observation 2</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr>
-                    <td id = "O1_form">
-                        <form id        =  "upload_form"
-                            enctype   =  "multipart/form-data"
-                            action    =  "/uploadedO1"
-                            method    =  "post"
-                        >
-                        <div style="position:relative;">
-                                    <a class='btn btn-default' href='javascript:;'>
-                                        Choose File...
-                                        <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' id = "file_upload_O1" name="user_file" size="40"  onchange='$("#upload-file-info_O1").html($(this).val().replace("C:\\fakepath\\","")) ;'>
-                                    </a>
-                                    &nbsp;
-                                   <span class='label label-info' id="upload-file-info_O1"></span>
-                         </div>
-                        <input class = "btn btn-default" type="submit" value="Upload File" name="submit" onclick = 'return emptyfile_check_O1();'/>
-                        </form>
-                     </td>
-
-                    <td id = "O2_form">
-                        <form id        =  "upload_form"
-                            enctype   =  "multipart/form-data"
-                            action    =  "/uploadedO2"
-                            method    =  "post"
-                        >
-                        <div style="position:relative;">
-                                    <a class='btn btn-default' href='javascript:;'>
-                                        Choose File...
-                                        <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' id = "file_upload_O2" name="user_file" size="40"  onchange='$("#upload-file-info_O2").html($(this).val().replace("C:\\fakepath\\","")) ;'>
-                                    </a>
-                                    &nbsp;
-                                   <span class='label label-info' id="upload-file-info_O2"></span>
-                         </div>
-                        <input class = "btn btn-default" type="submit" value="Upload File" name="submit" onclick = 'return emptyfile_check_O2();'/>
-                        </form>
-                     </td>
-                 </tr>
-            </tbody>
-            <thead>
-                <tr>
-                    <th>Observation 3</th>
-                    <th>Group</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                 <tr>
-                    <td id = "O3_form">
-                        <form id        =  "upload_form"
-                            enctype   =  "multipart/form-data"
-                            action    =  "/uploadedO3"
-                            method    =  "post"
-                        >
-                        <div style="position:relative;">
-                                    <a class='btn btn-default' href='javascript:;'>
-                                        Choose File...
-                                        <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' id = "file_upload_O3" name="user_file" size="40"  onchange='$("#upload-file-info_O3").html($(this).val().replace("C:\\fakepath\\","")) ;'>
-                                    </a>
-                                    &nbsp;
-                                   <span class='label label-info' id="upload-file-info_O3"></span>
-                         </div>
-                        <input class = "btn btn-default" type="submit" value="Upload File" name="submit" onclick = 'return emptyfile_check_O3();'/>
-                        </form>
-                     </td>
-
-                    <td id = "G_form">
-                        <form id        =  "upload_form"
-                            enctype   =  "multipart/form-data"
-                            action    =  "/uploadedG"
-                            method    =  "post"
-                        >
-                        <div style="position:relative;">
-                                    <a class='btn btn-default' href='javascript:;'>
-                                        Choose File...
-                                        <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' id = "file_upload_G" name="user_file" size="40"  onchange='$("#upload-file-info_G").html($(this).val().replace("C:\\fakepath\\","")) ;'>
-                                    </a>
-                                    &nbsp;
-                                   <span class='label label-info' id="upload-file-info_G"></span>
-                         </div>
-                        <input class = "btn btn-default" type="submit" value="Upload File" name="submit" onclick = 'return emptyfile_check_G();'/>
-                        </form>
-                    </td>
-                </tr>
-        </table>
+				<th>E-1 Upload</th>
+				<th>E-2 Upload</th>
+			</thead>
+                        <tbody>
+                            <tr>
+                                <td id = "E1_form">
+                                    <form id        =  "upload_form"
+                                        enctype   =  "multipart/form-data"
+                                        action    =  "/uploadedE1"
+                                        method    =  "post"
+                                    >
+                                    <div style="position:relative;">
+                                                <a class='btn btn-default' href='javascript:;'>
+                                                    Choose File...
+                                                    <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' id = "file_upload_E1" name="user_file" size="40"  onchange='$("#upload-file-info_E1").html($(this).val().replace("C:\\fakepath\\","")) ;'>
+                                                </a>
+                                                &nbsp;
+                                               <span class='label label-info' id="upload-file-info_E1"></span>
+                                     </div>
+                                    <input class = "btn btn-default" type="submit" value="Upload File" name="submit" onclick = 'return emptyfile_check_E1();'/>
+                                    </form>
+                                 </td>
+                                <td id = "E2_form">
+                                    <form id        =  "upload_form"
+                                        enctype   =  "multipart/form-data"
+                                        action    =  "/uploadedE2"
+                                        method    =  "post"
+                                    >
+                                    <div style="position:relative;">
+                                                <a class='btn btn-default' href='javascript:;'> Choose File...  <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' id = "file_upload_E2" name="user_file" size="40"  onchange='$("#upload-file-info_E2").html($(this).val().replace("C:\\fakepath\\",""));'> </a>
+                                                &nbsp;
+                                                <span class='label label-info' id="upload-file-info_E2"></span>
+                                    </div>
+                                    <input class = "btn btn-default" type="submit" value="Upload File" name="submit" onclick = 'return emptyfile_check_E2();'/>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>   
+                    </table>
 
                     <table id='download_table' class='table table-bordered table-hover'>
                         <thead>
@@ -339,9 +194,9 @@
         <script src = "/socket.io/socket.io.js"></script>
         <script>
             //gets the element by its id
-            var TOC_file = document.getElementById('file_upload_TOC');
+            var E1_file = document.getElementById('file_upload_E1');
             //binds to onchange event of the input field
-            TOC_file.addEventListener('change', function() 
+            E1_file.addEventListener('change', function() 
             {
                 //this.files[0].size gets the size of your file.
                 if(this.files[0].size > 104857600)
@@ -351,69 +206,9 @@
                 }
                 
             });
-            var T_file = document.getElementById('file_upload_T');
+            var E2_file = document.getElementById('file_upload_E2');
             //binds to onchange event of the input field
-            T_file.addEventListener('change', function() 
-            {
-                //this.files[0].size gets the size of your file.
-                if(this.files[0].size > 104857600)
-                {
-                    alert("File limit (100 MB) exceeded.");
-                    window.location = '/';
-                }
-                
-            });
-            var D_file = document.getElementById('file_upload_D');
-            //binds to onchange event of the input field
-            D_file.addEventListener('change', function() 
-            {
-                //this.files[0].size gets the size of your file.
-                if(this.files[0].size > 104857600)
-                {
-                    alert("File limit (100 MB) exceeded.");
-                    window.location = '/';
-                }
-                
-            });
-            var O1_file = document.getElementById('file_upload_O1');
-            //binds to onchange event of the input field
-            O1_file.addEventListener('change', function() 
-            {
-                //this.files[0].size gets the size of your file.
-                if(this.files[0].size > 104857600)
-                {
-                    alert("File limit (100 MB) exceeded.");
-                    window.location = '/';
-                }
-                
-            });
-            var O2_file = document.getElementById('file_upload_O2');
-            //binds to onchange event of the input field
-            O2_file.addEventListener('change', function() 
-            {
-                //this.files[0].size gets the size of your file.
-                if(this.files[0].size > 104857600)
-                {
-                    alert("File limit (100 MB) exceeded.");
-                    window.location = '/';
-                }
-                
-            });
-            var O3_file = document.getElementById('file_upload_O3');
-            //binds to onchange event of the input field
-            O3_file.addEventListener('change', function() 
-            {
-                //this.files[0].size gets the size of your file.
-                if(this.files[0].size > 104857600)
-                {
-                    alert("File limit (100 MB) exceeded.");
-                    window.location = '/';
-                }
-                
-            });
-            var G_file = document.getElementById('file_upload_G');
-            //binds to onchange event of the input field
-            G_file.addEventListener('change', function() 
+            E2_file.addEventListener('change', function() 
             {
                 //this.files[0].size gets the size of your file.
                 if(this.files[0].size > 104857600)
@@ -816,9 +611,9 @@
                 $('input[name=vote-options2]').attr('disabled',true);
                 $("#timer").parent().hide();
             }
-            function emptyfile_check_TOC()
+            function emptyfile_check_E1()
             {
-                var file = document.getElementById('file_upload_TOC');
+                var file = document.getElementById('file_upload_E1');
                 if(file.value === null || file.value === "")
                 {
                     alert("It is not possible to upload an empty file.");
@@ -830,93 +625,9 @@
                     return true;
                 }
             }
-            function emptyfile_check_T()
+            function emptyfile_check_E2()
             {
-                var file = document.getElementById('file_upload_T');
-                if(file.value === null || file.value === "")
-                {
-                    alert("It is not possible to upload an empty file.");
-                    return false;
-                }
-                else
-                {
-                    alert("File uploaded successfully.");
-                    return true;
-                }
-            }
-            function emptyfile_check_TOC()
-            {
-                var file = document.getElementById('file_upload_TOC');
-                if(file.value === null || file.value === "")
-                {
-                    alert("It is not possible to upload an empty file.");
-                    return false;
-                }
-                else
-                {
-                    alert("File uploaded successfully.");
-                    return true;
-                }
-            }
-            function emptyfile_check_D()
-            {
-                var file = document.getElementById('file_upload_D');
-                if(file.value === null || file.value === "")
-                {
-                    alert("It is not possible to upload an empty file.");
-                    return false;
-                }
-                else
-                {
-                    alert("File uploaded successfully.");
-                    return true;
-                }
-            }
-            function emptyfile_check_O1()
-            {
-                var file = document.getElementById('file_upload_O1');
-                if(file.value === null || file.value === "")
-                {
-                    alert("It is not possible to upload an empty file.");
-                    return false;
-                }
-                else
-                {
-                    alert("File uploaded successfully.");
-                    return true;
-                }
-            }
-            function emptyfile_check_O2()
-            {
-                var file = document.getElementById('file_upload_O2');
-                if(file.value === null || file.value === "")
-                {
-                    alert("It is not possible to upload an empty file.");
-                    return false;
-                }
-                else
-                {
-                    alert("File uploaded successfully.");
-                    return true;
-                }
-            }
-            function emptyfile_check_O3()
-            {
-                var file = document.getElementById('file_upload_O3');
-                if(file.value === null || file.value === "")
-                {
-                    alert("It is not possible to upload an empty file.");
-                    return false;
-                }
-                else
-                {
-                    alert("File uploaded successfully.");
-                    return true;
-                }
-            }
-            function emptyfile_check_G()
-            {
-                var file = document.getElementById('file_upload_G');
+                var file = document.getElementById('file_upload_E2');
                 if(file.value === null || file.value === "")
                 {
                     alert("It is not possible to upload an empty file.");
