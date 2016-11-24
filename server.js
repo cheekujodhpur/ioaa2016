@@ -1224,6 +1224,111 @@ app.post('/list_dir',function(req,res)
 });
 //direcotry listing END
 
+//receive request for fb
+app.post('/request_fb',function(req,res)
+{
+    var jsonString = '';
+    var ip = req.ip;
+    console.log("'/request_fb' request received from " + ip.toString());  
+
+    req.on('data',function(data)
+    {
+       jsonString += data;
+    });
+    req.on('end',function()
+    {
+       var jsonData = JSON.parse('{"'+decodeURI(jsonString).replace(/"/g,'\\"').replace(/&/g,'","').replace(/=/g,'":"')+'"}');
+       var current = jsonData['current'];
+		MongoClient.connect("mongodb://localhost:27017/test",function(err,db)
+        {
+		    if(err)
+		    {
+			    console.log(err);
+			    return 0;
+		    }
+            console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip.toString());
+		    var fbs = db.collection('fbs');
+		    fbs.find({qno:current}).toArray(function(err,feeds)
+		    {
+                var result = {};
+                result['feeds'] = feeds;
+                res.json(result);
+                console.log("Response to '/request_fb' sent in response to request from " + ip.toString());  
+			    db.close();
+		    });
+		});
+    });
+});
+
+app.post('/request_fb_leader',function(req,res)
+{
+    var jsonString = '';
+    var ip = req.ip;
+    console.log("'/request_fb' request received from " + ip.toString());  
+
+    req.on('data',function(data)
+    {
+       jsonString += data;
+    });
+    req.on('end',function()
+    {
+       var jsonData = JSON.parse('{"'+decodeURI(jsonString).replace(/"/g,'\\"').replace(/&/g,'","').replace(/=/g,'":"')+'"}');
+       var current = jsonData['current'];
+		MongoClient.connect("mongodb://localhost:27017/test",function(err,db)
+        {
+		    if(err)
+		    {
+			    console.log(err);
+			    return 0;
+		    }
+            console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip.toString());
+		    var fbs = db.collection('fbs');
+		    fbs.find({qno:current,"ip":ip}).toArray(function(err,feeds)
+		    {
+                var result = {};
+                result['feeds'] = feeds;
+                res.json(result);
+                console.log("Response to '/request_fb' sent in response to request from " + ip.toString());  
+			    db.close();
+		    });
+		});
+    });
+});
+
+//subpart START
+//send subparts
+app.post('/get_subparts',function(req,res)
+{
+    var jsonString = '';
+    var ip = req.ip;
+    console.log("'/get_subparts' request received from " + ip.toString());  
+
+    req.on('data',function(data)
+    {
+       jsonString += data;
+    });
+    req.on('end',function()
+    {
+       var jsonData = JSON.parse('{"'+decodeURI(jsonString).replace(/"/g,'\\"').replace(/&/g,'","').replace(/=/g,'":"')+'"}');
+       var type = jsonData['val'];
+        MongoClient.connect("mongodb://localhost:27017/test",function(err,db)
+        {
+            if(err)
+            {
+                console.log(err);
+                return 0;
+            }
+            console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip.toString());
+            var collection = db.collection('subparts');
+            collection.find({'type':type}).toArray(function(err,items){
+                res.json(items[0]);
+                db.close();
+            });
+        });
+    });
+});
+//subpart END
+
 io.on('connection',function(socket)
 {
     if(socket.handshake.address != null)
@@ -1237,6 +1342,63 @@ io.on('connection',function(socket)
     }
     if(ip == null){socket.io.close();return;}
     console.log("Connection established to the socket in reponse to " + ip);
+
+    //send init signals START
+    MongoClient.connect("mongodb://localhost:27017/test",function(err,db)
+    {
+        if(err)
+        {
+            console.log(err);
+            db.close();
+            return 0;
+        }
+        console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip);
+        var messages = db.collection('messages');
+        
+        messages.find({}).toArray(function(err,items)
+        {   
+            message_table = items;
+            io.sockets.emit('message-sent',message_table); 
+            console.log("'message-sent' signal broadcasted from the server in response to " + ip.toString());
+            db.close();
+        });
+    }); 
+       
+    MongoClient.connect("mongodb://localhost:27017/test",function(err,db)
+    {
+        if(err)
+        {
+            console.log(err);
+            db.close();
+            return 0;
+        }
+        console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip);
+        var flags = db.collection('flags');
+        flags.find({"name":"feedback"}).toArray(function(err,items)
+        {
+            if(items != '')
+            {
+                if(parseInt(items[0].value)==0){
+                    socket.emit('fbDisable');
+                    console.log("'fbDisable' signal sent from the server in response to " + ip.toString());
+                    db.close();
+                }
+                else
+                {
+                    socket.emit('fbEnable',items[0].value);
+                    console.log("'fbEnable' signal sent from the server in response to " + ip.toString());
+                    db.close();
+                }
+            }
+            else
+            {
+                    socket.emit('fbDisable');
+                    console.log("'fbDisable' signal sent from the server in response to " + ip.toString());
+                    db.close();
+            }
+        });
+    });
+    //send init signals END
 
     //login START
 	socket.on('syn',function(user,pass)
@@ -1571,6 +1733,206 @@ io.on('connection',function(socket)
         console.log("'message-sent' signal broadcasted from the server in response to " + ip.toString());
     });
     //message board END
+
+
+    //file operations START
+    socket.on('file-delete',function(id) 
+    {
+        
+        if(socket.handshake.address != null)
+        {
+            var ip = socket.handshake.address.toString();
+        }
+        else
+        {
+            console.log("Null IP Error in io.on connection.Carry on");
+            return;
+        }
+        console.log("'file-delete' signal received from " + ip.toString());
+        var message_table = [];
+	    try
+	    {
+	    	fs.unlink(__dirname + id);
+            }
+	    catch(err)
+            {
+                console.log("File deletion failed");
+	    }
+    	socket.emit('file-deleted');
+	});
+    //file operations END
+
+    //feedback START
+    //start feedback
+    socket.on('fbStart',function(q){
+        
+        if(socket.handshake.address != null)
+        {
+            var ip = socket.handshake.address.toString();
+        }
+        else
+        {
+            console.log("Null IP Error in io.on connection.Carry on");
+            return;
+        }
+		console.log("'fbStart' signal for " + q +" received from " + ip.toString());
+
+		MongoClient.connect("mongodb://localhost:27017/test",function(err,db)
+        {
+		    if(err)
+		    {
+			    console.log(err);
+			    return 0;
+		    }
+            console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip.toString());
+            
+			var flags = db.collection('flags');
+			var query = {};
+			query['value'] = q;
+		    flags.update({"name":"feedback"},{$set:query},{upsert:true},function(err,result){db.close();});
+	    });
+	    io.sockets.emit('fbEnable',q);
+		console.log("'fbEnable' signal emitted from server in response to " + ip.toString());
+    });
+    
+    //end feedback
+    socket.on('fbEnd',function(){
+        
+        if(socket.handshake.address != null)
+        {
+            var ip = socket.handshake.address.toString();
+        }
+        else
+        {
+            console.log("Null IP Error in io.on connection.Carry on");
+            return;
+        }
+		console.log("'fbEnd' signal received from " + ip.toString());
+		MongoClient.connect("mongodb://localhost:27017/test",function(err,db)
+        {
+		    if(err)
+		    {
+			    console.log(err);
+			    return 0;
+		    }
+            console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip.toString());
+            
+			var flags = db.collection('flags');
+			var query = {};
+			query['value'] = 0;
+		    flags.update({"name":"feedback"},{$set:query},function(err,result){db.close();});
+	    });
+	    io.sockets.emit('fbDisable');
+		console.log("'fbDisable' signal emitted from server in response to " + ip.toString());
+    });
+
+    //store and send feedback
+    socket.on('fbContent',function(id,current,content,time){
+        
+		console.log("'fbContent' signal received from " + ip.toString());
+		MongoClient.connect("mongodb://localhost:27017/test",function(err,db)
+        {
+		    if(err)
+		    {
+			    console.log(err);
+			    return 0;
+		    }
+            console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip.toString());
+            
+			var fbs = db.collection('fbs');
+            var users = db.collection('users');
+            users.find({"ip":ip}).toArray(function(err,result){
+                var country_code = result[0].country_code;
+                var query = {};
+                query['ip'] = ip;
+                query['country_code'] = country_code;
+                query['qid'] = id;  //question id
+                query['qno'] = current;
+                query['time'] = time;
+                query['done'] = false;
+                var query2 = {};
+                query2['content'] = content;
+                fbs.update(query,{$push:query2},{upsert:true},function(err,result){db.close();});
+            });
+	    });
+    });
+
+    socket.on('fbRequest',function(value){
+        
+        if(socket.handshake.address != null)
+        {
+            var ip = socket.handshake.address.toString();
+        }
+        else
+        {
+            console.log("Null IP Error in io.on connection.Carry on");
+            return;
+        }
+		console.log("'fbRequest' for "+value+" signal received from " + ip.toString());
+		MongoClient.connect("mongodb://localhost:27017/test",function(err,db)
+        {
+		    if(err)
+		    {
+			    console.log(err);
+			    return 0;
+		    }
+            console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip.toString());
+		    var fbs = db.collection('fbs');
+		    fbs.find({qno:value}).toArray(function(err,feeds)
+		    {
+				socket.emit('fbDisplay',feeds);
+		        console.log("'fbDisplay' signal emitted from server in response to " + ip.toString());
+			    db.close();
+		    });
+		});
+    });
+
+    socket.on('fb_stat_toggle',function(fb_id)
+    {
+        if(socket.handshake.address != null)
+        {
+            var ip = socket.handshake.address.toString();
+        }
+        else
+        {
+            console.log("Null IP Error in io.on connection.Carry on");
+            return;
+        }
+        console.log("'fb_stat_toggle' signal received from " + ip.toString());
+
+        MongoClient.connect("mongodb://localhost:27017/test",function(err,db)
+        {
+            if(err)
+            {
+                console.log(err);
+                return 0;
+            }
+            console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip.toString());
+            var fbs= db.collection('fbs');
+            var _id = new ObjectID(fb_id);
+            
+            fbs.find({"_id":_id}).toArray(function(err,items)
+            { 
+                if(items[0].done == true)
+                {
+                    fbs.update({"_id":_id},{$set: {"done": false}},function(err){db.close();});
+                }
+                else
+                {
+                    fbs.update({"_id":_id},{$set: {"done": true}},function(err){db.close();});
+                }
+            });
+            /*
+            var doc = fbs.findOne({"_id": _id});
+            console.log(doc);
+            console.log(fb_id);
+            fbs.update({"_id":ObjectID(fb_id)},{$set: {done: !doc.done}});
+            */
+            console.log("done toggled sucessfully for feedback id " + fb_id);
+            return;
+        });
+    }); 
+    //feedback END
 });
 app.use("/uploads/ayush/",express.static(__dirname + "/uploads/ayush/"));console.log("File download enabled for /uploads/ayush/");
 app.use("/uploads/sandesh/",express.static(__dirname + "/uploads/sandesh/"));console.log("File download enabled for /uploads/sandesh/");

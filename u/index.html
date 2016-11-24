@@ -761,33 +761,39 @@
             socket.on('fbEnable',function(q){
                 if(q=='t1')
                 {
-                    $("#fbHead").text("Feedback for T-1");
+                    $("#fbHead").text("Feedback for Q 1-5");
                     get_subparts('t1');
                 }
                 if(q=='t2')
                 {
-                    $("#fbHead").text("Feedback for T-2");
+                    $("#fbHead").text("Feedback for Q 6-10");
                     get_subparts('t2');
                 }
                 if(q=='t3')
                 {
-                    $("#fbHead").text("Feedback for T-3");
+                    $("#fbHead").text("Feedback for Q 10-15");
                     get_subparts('t3');
                 }
-                if(q=='e1')
+                if(q=='d')
                 {
-                    $("#fbHead").text("Feedback for E-1");
-                    get_subparts('e1');
+                    $("#fbHead").text("Feedback for Data");
+                    get_subparts('d');
                 }   
-                if(q=='e2')
+                if(q=='o')
                 {
-                    $("#fbHead").text("Feedback for E-2");
-                    get_subparts('e2');
+                    $("#fbHead").text("Feedback for Observation");
+                    get_subparts('o');
+                }   
+                if(q=='g')
+                {
+                    $("#fbHead").text("Feedback for Group");
+                    get_subparts('g');
                 }   
                 fb_current = q;
                 request_fb(fb_current);
                 $("#fbb").show();
             });
+
             //FEEDBACK DISABLE
             socket.on('fbDisable',function(){
                 $("#nemo a:first").tab('show');

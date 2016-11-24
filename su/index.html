@@ -117,10 +117,39 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>E</td>
-                                        <td><input name = "fb-toggle" type = "radio" onclick = "socket.emit('fbStart','e')" value="e" /></td> 
-                                        <td><input name = "fb-display-toggle" type = "radio" onclick = "fb_current = 'e';reset_fb_timer();" value="e" /></td>
+                                        <td>Theory 1-5</td>
+                                        <td><input name = "fb-toggle" type = "radio" onclick = "socket.emit('fbStart','t1')" value="t1" /></td> 
+                                        <td><input name = "fb-display-toggle" type = "radio" onclick = "fb_current = 't1';reset_fb_timer();" value="t1" /></td>
                                     </tr> 
+                                    <tr>
+                                        <td>Theory 6-10</td>
+                                        <td><input name = "fb-toggle" type = "radio" onclick = "socket.emit('fbStart','t2')" value="t2" /></td> 
+                                        <td><input name = "fb-display-toggle" type = "radio" onclick = "fb_current = 't2';reset_fb_timer();" value="t2" /></td>
+                                    </tr> 
+                                    <tr>
+                                        <td>Theory 11-15</td>
+                                        <td><input name = "fb-toggle" type = "radio" onclick = "socket.emit('fbStart','t3')" value="t3" /></td> 
+                                        <td><input name = "fb-display-toggle" type = "radio" onclick = "fb_current = 't3';reset_fb_timer();" value="t3" /></td>
+                                    </tr> 
+
+                                    <tr>
+                                        <td>Data</td>
+                                        <td><input name = "fb-toggle" type = "radio" onclick = "socket.emit('fbStart','d')" value="d" /></td> 
+                                        <td><input name = "fb-display-toggle" type = "radio" onclick = "fb_current = 'd';reset_fb_timer();" value="d" /></td>
+                                    </tr> 
+
+                                    <tr>
+                                        <td>Observation</td>
+                                        <td><input name = "fb-toggle" type = "radio" onclick = "socket.emit('fbStart','o')" value="o" /></td> 
+                                        <td><input name = "fb-display-toggle" type = "radio" onclick = "fb_current = 'o';reset_fb_timer();" value="o" /></td>
+                                    </tr> 
+                                    
+                                    <tr>
+                                        <td>Group</td>
+                                        <td><input name = "fb-toggle" type = "radio" onclick = "socket.emit('fbStart','g')" value="g" /></td> 
+                                        <td><input name = "fb-display-toggle" type = "radio" onclick = "fb_current = 'g';reset_fb_timer();" value="g" /></td>
+                                    </tr> 
+
                                     <tr>
                                         <td>None</td>
                                         <td colspan="2">
@@ -128,7 +157,7 @@
                                                 <label><input name = "fb-toggle" type = "radio" checked="checked" onclick = "socket.emit('fbEnd');"/>None</label>
                                             </div>
                                         </td>
-
+                                    </tr>
                         </div>
                     </form>
                     
