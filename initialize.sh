@@ -13,3 +13,5 @@ do
         ./add_user.sh $LINE;
     fi    
 done < country_code_user.txt 
+
+echo 'app.use("/downloads/",express.static(__dirname + "/downloads/"));console.log("File download enabled for /downloads/");' >> server.js
