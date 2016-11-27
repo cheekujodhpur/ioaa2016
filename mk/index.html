@@ -45,14 +45,16 @@
         <div id = "document">
             <div role = "tabpanel">
                     <ul class = "nav nav-pills" id = "nemo">
-                        <li role = "presentation" class="active"><a href = "#theory" aria-controls="marks" role="tab" data-toggle="tab">Theory</a></li>
+                        <li role = "presentation" class = "active"><a href = "#marks" aria-controls="marks" role="tab" data-toggle="tab">Marks</a></li>
                     </ul>
             </div>
             
             <div class = "tab-content">
-                <div role="tabpanel" class="tab-pane active" id = "theory">
+                <div role="tabpanel" class="tab-pane active" id = "marks">
+                    <select id = "country_list_select">
+                    </select>
                     <form id = "form_marks_T">
-			<h3>Theory Marks Entry</h3>
+			<h3>TheoryMarks Entry</h3>
                         <table class = "table table-striped" id = "mark_table_T" style="table-layout:fixed;">
                             <thead>
                                 <tr>
@@ -72,7 +74,6 @@
                         </table>
                     </form>
                     <button type="submit" class="btn btn-default save_button" data-type = "t">Save</button>
-                    <button type="submit" class="btn btn-success submit_button" data-type = "t">Submit</button>
                 </div>
             </div>
         </div>
@@ -131,10 +132,6 @@
                 socket.io.reconnect();
             });	
            
-            socket.on('numofleaders',function(value)
-            {
-                num_of_leaders = value;
-            });
             //DONT PUT THIS IN DOCUMENT READY SCRIPT
             //function to disableF5
             function disableF5(e) { if ((e.which || e.keyCode) == 116) e.preventDefault(); };
@@ -158,153 +155,6 @@
                     window.location = '/chpass.html';
                 });
 
-                $(".submit_button").click(function(){
-                    var type_question = $(this).attr('data-type');
-                    if(type_question=='t')
-                    {
-                        submit_marks('t');
-                    }
-                });
-                
-                function validateMarks(type_question)
-                {
-                    if(type_question=='t1')
-                        var data = $("#form_marks_T1").serializeArray();
-                    else if(type_question=='t2')
-                        var data = $("#form_marks_T2").serializeArray();
-                    else if(type_question=='t3')
-                        var data = $("#form_marks_T3").serializeArray();
-                    else if(type_question=='t')
-                        var data = $("#form_marks_T").serializeArray();
-                    else if(type_question=='e2')
-                        var data = $("#form_marks_E2").serializeArray();
-                    var ajaxData = {};
-                    var maxMarks = []
-                    //CAREFUL, hard coded line below
-                    if(type_question=='t1')
-                        var num_subparts = $("#mark_table_body_T1").find("tr:first td").length-2;
-                    else if(type_question=='t2')
-                        var num_subparts = $("#mark_table_body_T2").find("tr:first td").length-2;
-                    else if(type_question=='t3')
-                        var num_subparts = $("#mark_table_body_T3").find("tr:first td").length-2;
-                    else if(type_question=='t')
-                        var num_subparts = $("#mark_table_body_T").find("tr:first td").length-2;
-                    else if(type_question=='e2')
-                        var num_subparts = $("#mark_table_body_E2").find("tr:first td").length-2;
-                    for(var j = 0;j<num_subparts;j++)
-                    {
-                        maxMarks.push(parseFloat(data[j].value));
-                    }
-                    for(var i = 1;i<data.length/num_subparts;i++)
-                    {
-                        for(var j = 0;j<num_subparts;j++)
-                        {
-                            var tmp_mark = data[i*num_subparts+j].value;
-                            if(tmp_mark=='')
-                            {
-                                alert("No field can be empty!");
-                                return 0;
-                            }
-                            if(isNaN(parseFloat(tmp_mark)))
-                            {
-                                alert("Not a number");
-                                return 0;
-                            }
-                            if((tmp_mark.split('.')[1] || []).length > 1)
-                            {
-                                alert("Least count is 0.1");
-                                return 0;
-                            }
-                            if(parseFloat(tmp_mark)>maxMarks[j])
-                            {
-                                alert("Marks should be less than max marks");
-                                return 0;
-                            }
-                            ajaxData[(i-1)*num_subparts+j] = parseFloat(tmp_mark);
-                        }
-                    }
-                    return 1;
-                }
-
-                function submit_marks(type_question)
-                {
-                    if(type_question=='t1')
-                        var data = $("#form_marks_T1").serializeArray();
-                    else if(type_question=='t2')
-                        var data = $("#form_marks_T2").serializeArray();
-                    else if(type_question=='t3')
-                        var data = $("#form_marks_T3").serializeArray();
-                    else if(type_question=='t')
-                        var data = $("#form_marks_T").serializeArray();
-                    else if(type_question=='e2')
-                        var data = $("#form_marks_E2").serializeArray();
-                    var ajaxData = {};
-                    var maxMarks = []
-                    //CAREFUL, hard coded line below
-                    if(type_question=='t1')
-                        var num_subparts = $("#mark_table_body_T1").find("tr:first td").length-2;
-                    else if(type_question=='t2')
-                        var num_subparts = $("#mark_table_body_T2").find("tr:first td").length-2;
-                    else if(type_question=='t3')
-                        var num_subparts = $("#mark_table_body_T3").find("tr:first td").length-2;
-                    else if(type_question=='t')
-                        var num_subparts = $("#mark_table_body_T").find("tr:first td").length-2;
-                    else if(type_question=='e2')
-                        var num_subparts = $("#mark_table_body_E2").find("tr:first td").length-2;
-                    for(var j = 0;j<num_subparts;j++)
-                    {
-                        maxMarks.push(parseFloat(data[j].value));
-                    }
-                    for(var i = 1;i<data.length/num_subparts;i++)
-                    {
-                        for(var j = 0;j<num_subparts;j++)
-                        {
-                            var tmp_mark = data[i*num_subparts+j].value;
-                            if(tmp_mark=='')
-                            {
-                                alert("No field can be empty!");
-                                return;
-                            }
-                            if(isNaN(parseFloat(tmp_mark)))
-                            {
-                                alert("Not a number");
-                                return;
-                            }
-                            if((tmp_mark.split('.')[1] || []).length > 1)
-                            {
-                                alert("Least count is 0.1");
-                                return;
-                            }
-                            if(parseFloat(tmp_mark)>maxMarks[j])
-                            {
-                                alert("Marks should be less than max marks");
-                                return;
-                            }
-                            ajaxData[(i-1)*num_subparts+j] = parseFloat(tmp_mark);
-                        }
-                    }
-                    if(type_question=='t1')
-                        var destination_url = 'submit_mark_T1';
-                    else if(type_question=='t2')
-                        var destination_url = 'submit_mark_T2';
-                    else if(type_question=='t3')
-                        var destination_url = 'submit_mark_T3';
-                    else if(type_question=='t')
-                        var destination_url = 'submit_mark_T';
-                    else if(type_question=='e2')
-                        var destination_url = 'submit_mark_E2';
-                    $.ajax({
-                            method:"POST",
-                            timeout:4000,
-                            url:destination_url,
-                            data:ajaxData
-                            }).
-                    done(function(data)
-                    {
-                            window.open(data.filename,"_blank");
-                            send_sheetEditable(type_question);
-                    });
-                }
 
                 $(".save_button").click(function(){
                     var type_question = $(this).attr('data-type');
@@ -368,6 +218,7 @@
                         var destination_url = 'save_mark_T';
                     else if(type_question=='e2')
                         var destination_url = 'save_mark_E2';
+                    ajaxData['country'] = $("#country_list_select").val();
                     $.ajax({
                             method:"POST",
                             timeout:4000,
@@ -379,7 +230,7 @@
 
             });
            
-            function send_sheetEditable(type_question)
+            function send_sheetEditable(country_name,type_question)
             {
                 if(type_question=='t1')
                     var destination_url = 'sheetEditableT1';
@@ -391,28 +242,15 @@
                     var destination_url = 'sheetEditableT';
                 else if(type_question=='e2')
                     var destination_url = 'sheetEditableE2';
+                var uData = {};
+                uData['country_name'] = country_name;
                 $.ajax
                 ({
                     method:'POST',
-                    url : destination_url
+                    url : destination_url,
+                    data : uData
                 }).done(function(data)
                 {
-                    if(!data.valid)
-                    {
-                        $(".save_button").each(function(){$(this).remove();});
-                        $(".submit_button").each(function(){$(this).remove();});
-                        if(type_question=='t')
-                        {    
-                            var nelem = '<a target = "_blank" href = "marks/' + country_code_global + '_T.html">E-1 Marksheet</a>';
-                            $("#form_marks_T").html(nelem);
-                        }
-                        else if(type_question=='e2')
-                        {
-                            var nelem = '<a target = "_blank" href = "marks/' + country_code_global + '_E2.html">E-2 Marksheet</a>';
-                            $("#form_marks_E2").html(nelem);
-                        }
-                        return;
-                    }
                     var table_subparts_body = "";
                     var table_maxMarks_body = "";
                     for(var i in data.subparts)
@@ -477,6 +315,37 @@
                 });
             }
 
+            $("#country_list_select").change(function(){
+            
+                var name = $(this).val();
+                if(name=='')
+                {
+                    $("#mark_table_body_T").html('');
+                    $("#mark_table_body_E2").html('');
+                    return; //blank country, do nothing
+                }
+                $("#mark_table_body_T").html('<tr id = "subparts_row_T"><td></td><td>Subparts</td></tr><tr id = "maxMarks_row_T"><td></td><td>Maximum Marks</td></tr>');
+                $("#mark_table_body_E2").html('<tr id = "subparts_row_E2"><td></td><td>Subparts</td></tr><tr id = "maxMarks_row_E2"><td></td><td>Maximum Marks</td></tr>');
+                
+                send_sheetEditable(name,'t');
+                send_sheetEditable(name,'e2');
+            });
+            
+            socket.on('countries',function(countries){
+                    var select_elem = $("#country_list_select");
+                    var opt = '<option></option>';
+                    select_elem.append(opt);
+                    for(var i in countries)
+                    {
+                        if(countries[i].country_name!="NULL")
+                        {
+                            opt = '<option>';
+                            opt += countries[i].country_name;
+                            opt += '</option>';
+                            select_elem.append(opt);
+                        }
+                    }
+            });
             socket.on('country-data',function(country)
             {
                 var mt_head = document.getElementById("message-board-head");
@@ -494,11 +363,10 @@
                 var cell = row.insertCell(1);
                 cell.innerHTML = "Message Table"; 
 
-                send_sheetEditable('t1');
-                send_sheetEditable('t2');
-                send_sheetEditable('t3');
-                send_sheetEditable('t');
-                send_sheetEditable('e2');
+                //send_sheetEditable('t1');
+                //send_sheetEditable('t2');
+                //send_sheetEditable('t3');
+                //send_sheetEditable('e');
             });
 
             //MESSAGE BOARD SIGNAL			
@@ -512,19 +380,6 @@
                 }
             });
 
-            //FEEDBACK ENABLE
-            socket.on('fbEnable',function(q){
-                if(q=='t1')
-                    $("#fbHead").text("Feedback for T-1");
-                if(q=='t2')
-                    $("#fbHead").text("Feedback for T-2");
-                if(q=='t3')
-                    $("#fbHead").text("Feedback for T-3");
-                if(q=='e1')
-                    $("#fbHead").text("Feedback for E-1");
-                if(q=='e2')
-                    $("#fbHead").text("Feedback for E-2");
-            });            
         </script>
 	   
 	</body>

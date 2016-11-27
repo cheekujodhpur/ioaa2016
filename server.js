@@ -110,6 +110,124 @@ app.get('/chpass.html',function(req,res)
 	res.sendFile(__dirname + '/chpass.html');
 });
 
+//marksheet GETs START
+app.get('/marksheet_list',function(req,res){
+
+    MongoClient.connect("mongodb://localhost:27017/test",function(err,db)
+    {
+        if(err)
+        {
+            console.log(err);
+            return;
+        }
+        if(req.ip != null)
+        {
+            var ip = req.ip.toString();
+        }
+        else
+        {
+            console.log("Null IP Error.Carry on");
+        }
+        console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip);
+        var collection = db.collection('users');
+        var ajaxData = {};
+        collection.find({"ip":ip}).toArray(function(err,items)
+        {
+            if(items.length == 0)
+            {
+                return;
+            }
+            if(items[0].type==0)
+            {
+                collection.find({}).toArray(function(err,items2){
+                    for(var i in items2)
+                    {
+                        var file_name = items2[i].country_code + '_T_our.html';
+                        var paths = [];
+                        if(fs.existsSync('mk/'+file_name))
+                            paths.push(file_name);
+                        ajaxData[items2[i].country_code] = paths;
+                    } 
+                    res.json(ajaxData);
+                    db.close();
+                });
+            }
+            else
+                db.close();
+        });
+        
+	});
+});
+
+app.get('/marksheet/:id',function(req,res){
+    var file_name = req.params.id;
+    MongoClient.connect("mongodb://localhost:27017/test",function(err,db)
+    {
+        if(err)
+        {
+            console.log(err);
+            return;
+        }
+        if(req.ip != null)
+        {
+            var ip = req.ip.toString();
+        }
+        else
+        {
+            console.log("Null IP Error.Carry on");
+        }
+        console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip);
+        var collection = db.collection('users');
+        collection.find({"ip":ip}).toArray(function(err,items)
+        {
+            if(items.length == 0)
+            {
+                return;
+            }
+            if(items[0].type==0)
+                res.sendFile(__dirname+'/mk/'+req.params.id);
+            db.close();
+        });
+        
+	});
+});
+
+app.get('/marks/:id',function(req,res){
+    var file_name = req.params.id;
+    if(file_name.split('_').length>2)
+        return;
+    MongoClient.connect("mongodb://localhost:27017/test",function(err,db)
+    {
+        if(err)
+        {
+            console.log(err);
+            return;
+        }
+        if(req.ip != null)
+        {
+            var ip = req.ip.toString();
+        }
+        else
+        {
+            console.log("Null IP Error.Carry on");
+        }
+        console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip);
+        var collection = db.collection('users');
+        collection.find({"ip":ip}).toArray(function(err,items)
+        {
+            if(items.length == 0)
+            {
+                return;
+            }
+            if(file_name.split('_')[0]==items[0].country_code)
+                res.sendFile(__dirname+'/mk/'+req.params.id);
+            db.close();
+        });
+        
+	});
+});
+//marksheet GETs end
+
 app.get('/', function (req, res)
 {
     MongoClient.connect("mongodb://localhost:27017/test",function(err,db)
@@ -153,6 +271,10 @@ app.get('/', function (req, res)
                 else if(type == 1)
                 {
                     res.sendFile(__dirname + '/u/index.html');
+                }
+                else if(type == 2)
+                {
+                    res.sendFile(__dirname + '/mk/index.html');
                 }
                 else
                 {
@@ -1329,6 +1451,278 @@ app.post('/get_subparts',function(req,res)
 });
 //subpart END
 
+//marksheets START
+app.post('/save_mark_T',function(req,res){
+
+    var jsonString = '';
+    req.on('data',function(data)
+        {
+            jsonString += data;
+        });
+    req.on('end',function(){
+        var jsonData = JSON.parse('{"' + decodeURI(jsonString).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+        var dbData = [];
+        var country_name = '';
+        for(var i in jsonData)
+        {
+            if(i!='country')
+                dbData.push(parseFloat(jsonData[i]));
+            else country_name = jsonData[i];
+        }
+        MongoClient.connect("mongodb://localhost:27017/test",function(err,db)
+        {
+            if(err)
+            {
+                console.log(err);
+                return 0;
+            }
+            if(req.ip != null)
+            {
+                var ip = req.ip.toString();
+            }
+            else
+            {
+                console.log("Null IP Error.Carry on");
+                return;
+            }
+            console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip.toString());
+            if(country_name=='')
+                var marks = db.collection('marks_T');
+            else var marks = db.collection('ourMarks_T');
+            var query_ob = {};
+            if(country_name=='')query_ob["ip"] = ip;
+            else query_ob["country_name"] = country_name;
+            marks.update(query_ob,{$set:{"leaderMarks":dbData}},{upsert:true},function(err,result){
+                res.json({"success":true});
+                db.close();});
+        });
+    });
+});
+
+app.post('/submit_mark_T',function(req,res){
+
+    var jsonString = '';
+    req.on('data',function(data)
+        {
+            jsonString += data;
+        });
+    req.on('end',function(){
+        var jsonData = JSON.parse('{"' + decodeURI(jsonString).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+        var dbData = [];
+        for(var i in jsonData)
+            dbData.push(parseFloat(jsonData[i]));
+        MongoClient.connect("mongodb://localhost:27017/test",function(err,db)
+        {
+            if(err)
+            {
+                console.log(err);
+                return 0;
+            }
+            if(req.ip != null)
+            {
+                var ip = req.ip.toString();
+            }
+            else
+            {
+                console.log("Null IP Error.Carry on");
+                return;
+            }
+            console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip.toString());
+            var marks = db.collection('marks_T');
+            var users = db.collection('users');
+            var ourMarks_db = db.collection('ourMarks_T');
+            var subparts = db.collection('subparts');
+            marks.update({"ip":ip},{$set:{"leaderMarks":dbData}},{upsert:true},function(err,result){
+                //TODO: the code to write the marks onto a file
+                users.find({"ip":ip}).toArray(function(err,items){
+                    var user = items[0];
+                    var leaderMarks = dbData;
+                    var country_code = user.country_code;
+                    var country_name = user.country_name;
+                    var number_of_students = user.number_of_students;
+                    subparts.find({"type":"t"}).toArray(function(err,itemss){
+                        var subpart_arr = itemss[0].subparts;
+                        var maxMarks_arr = itemss[0].maxMarks;
+                        ourMarks_db.find({"country_name":country_name}).toArray(function(err,items2){
+                            var ourMarks = items2[0].leaderMarks;   //Yes, the field name is still leaderMarks
+                            var fileName = "mk/" + country_code.toString() + "_T.html";
+                            var our_fileName = "mk/" + country_code.toString() + "_T_our.html";
+                            var com_fileName = "marks/" + country_code.toString() + "_T.html";
+                            var stream = fs.createWriteStream(fileName);
+                            stream.once('open',function(fd){
+                                var htmlstr = '';
+                                var tdstr_subparts = '';
+                                var tdstr_maxMarks = '';
+                                htmlstr += '<!DOCTYPE html> <html lang="en"> <head> <meta charset = "utf-8"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>IPhO 2015 - Mumbai, India</title> <!--Bootstrap--> <link href = "/static/css/bootstrap.min.css" rel = "stylesheet" /> <!!--Custom CSS--> <link href = "/static/css/main.css" rel = "stylesheet" /> <link href = "media/favicon.ico" rel="shortcut icon" type="image/x-icon"/> <link href = "media/favicon.ico" rel="icon" type="image/x-icon"/> </head><body onload = "window.print()" onload = "window.print()">';
+				htmlstr += '<h3>E-1 Marks</h3>';
+                                htmlstr += '<table class = "table table-striped">';
+                                for(var i = 0;i<ourMarks.length/number_of_students;i++)
+                                {
+                                    tdstr_subparts += '<td>'+subpart_arr[i]+'</td>';
+                                    tdstr_maxMarks += '<td><b>'+maxMarks_arr[i]+'</b></td>';
+                                } 
+                                htmlstr += '<tr> <th>Code</th> </tr> <tr> <td></td> <td>Subparts</td> '+tdstr_subparts+'</tr> <tr > <td></td> <td>Maximum Marks</td> '+tdstr_maxMarks+'</tr>';
+                                for(var i = 0;i<number_of_students;i++)
+                                {
+                                    htmlstr += '<tr><td>'+country_code+("0"+(i+1).toString()).slice(-2)+'</td><td></td>';
+                                    for(var j = 0;j<ourMarks.length/number_of_students;j++)
+                                    {
+                                        htmlstr += '<td>'+ourMarks[i*ourMarks.length/number_of_students+j].toString() + '</td>';
+                                    }
+                                    htmlstr += '</tr><tr><td colspan="2"></td>';
+                                    for(var j = 0;j<ourMarks.length/number_of_students;j++)
+                                    {
+                                        htmlstr += '<td>'+leaderMarks[i*ourMarks.length/number_of_students+j].toString() + '</td>';
+                                    }
+                                    htmlstr += '</tr><tr><td colspan="2"></td>';
+                                    for(var j = 0;j<ourMarks.length/number_of_students;j++)
+                                    {
+                                        htmlstr += '<td>'+(ourMarks[i*ourMarks.length/number_of_students+j]-leaderMarks[i*ourMarks.length/number_of_students+j]).toFixed(1) + '</td>';
+                                    }
+                                    htmlstr += '</tr><tr style="height:30px;"></tr>';
+                                }
+                                htmlstr += '</table>';
+                                htmlstr += '</body></html>';
+                                
+                                stream.write(htmlstr);
+                                stream.end();
+                            });
+                            var our_stream = fs.createWriteStream(our_fileName);
+                            our_stream.once('open',function(fd){
+                                var htmlstr = '';
+                                var tdstr_subparts = '';
+                                var tdstr_maxMarks = '';
+                                htmlstr += '<!DOCTYPE html> <html lang="en"> <head> <meta charset = "utf-8"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>IPhO 2015 - Mumbai, India</title> <!--Bootstrap--> <link href = "/static/css/bootstrap.min.css" rel = "stylesheet" /> <!!--Custom CSS--> <link href = "/static/css/main.css" rel = "stylesheet" /> <link href = "media/favicon.ico" rel="shortcut icon" type="image/x-icon"/> <link href = "media/favicon.ico" rel="icon" type="image/x-icon"/> </head><body>';
+				htmlstr += '<h3>E-2 Marks</h3>';
+                                htmlstr += '<table class = "table table-striped">';
+                                for(var i = 0;i<ourMarks.length/number_of_students;i++)
+                                {
+                                    tdstr_subparts += '<td>'+subpart_arr[i]+'</td>';
+                                    tdstr_maxMarks += '<td><b>'+maxMarks_arr[i]+'</b></td>';
+                                } 
+                                htmlstr += '<tr> <th>Code</th> </tr> <tr> <td></td> <td>Subparts</td> '+tdstr_subparts+'</tr> <tr > <td></td> <td>Maximum Marks</td> '+tdstr_maxMarks+'</tr>';
+                                for(var i = 0;i<number_of_students;i++)
+                                {
+                                    htmlstr += '<tr><td>'+country_code+("0"+(i+1).toString()).slice(-2)+'</td><td></td>';
+                                    for(var j = 0;j<ourMarks.length/number_of_students;j++)
+                                    {
+                                        htmlstr += '<td>'+ourMarks[i*ourMarks.length/number_of_students+j].toString() + '</td>';
+                                    }
+                                    htmlstr += '</tr><tr><td colspan="2"></td>';
+                                    for(var j = 0;j<ourMarks.length/number_of_students;j++)
+                                    {
+                                        htmlstr += '<td>'+leaderMarks[i*ourMarks.length/number_of_students+j].toString() + '</td>';
+                                    }
+                                    htmlstr += '</tr><tr><td colspan="2"></td>';
+                                    for(var j = 0;j<ourMarks.length/number_of_students;j++)
+                                    {
+                                        var difference = (ourMarks[i*ourMarks.length/number_of_students+j]-leaderMarks[i*ourMarks.length/number_of_students+j]).toFixed(1);
+                                        if(difference==0) 
+                                            htmlstr += '<td><b>'+ difference + '</b></td>';
+                                        else if(difference>0)
+                                            htmlstr += '<td><font style = "color:green"><b>'+ difference + '</b></font></td>';
+                                        else
+                                            htmlstr += '<td><font style = "color:red"><b>'+ difference + '</b></font></td>';
+                                    }
+                                    htmlstr += '</tr><tr style="height:30px;"></tr>';
+                                }
+                                htmlstr += '</table>';
+                                htmlstr += '</body></html>';
+                                
+                                our_stream.write(htmlstr);
+                                our_stream.end();
+                            });
+                            res.json({"success":true,"filename":com_fileName});
+                            db.close();
+                        });
+                    });
+                });
+            });
+        });
+    });
+});
+
+app.post('/sheetEditableT',function(req,res)
+{
+    var country_name ='';
+    var jsonString = '';
+    req.on('data',function(data)
+        {
+            jsonString += data;
+        });
+    req.on('end',function(){
+        country_name='';
+        if(jsonString==''){}
+        else{
+            var jsonData = JSON.parse('{"' + decodeURI(jsonString).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+            var country_name = jsonData['country_name'];
+        }
+        MongoClient.connect("mongodb://localhost:27017/test",function(err,db)
+        {
+            if(err)
+            {
+                console.log(err);
+                return 0;
+            }
+            if(req.ip != null)
+            {
+                var ip = req.ip.toString();
+            }
+            else
+            {
+                console.log("Null IP Error.Carry on");
+                return;
+            }
+            console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip.toString());
+            var subparts = db.collection('subparts');
+            if(country_name=='')
+                var marks = db.collection('marks_T');
+            else var marks = db.collection('ourMarks_T');
+            var users = db.collection('users');
+            
+            var query = {};
+            query['valid'] = 1;
+            subparts.find({"type":"t"}).toArray(function(err,items){
+                var subparts = items[0].subparts;
+                var maxMarks = items[0].maxMarks;
+                var query_ob = {};
+                if(country_name=='')query_ob["ip"] = ip;
+                else query_ob["country_name"] = country_name;
+                users.find(query_ob).toArray(function(err,data){
+                    var country_code = data[0].country_code;
+                    var number_of_students = data[0].number_of_students;
+                    var file_name = country_code + "_T.html";
+                    var file_path = "mk/" + file_name;
+                    if (fs.existsSync(file_path))
+                    {
+                        query['valid'] = 0;
+                        res.json(query);
+                        db.close();
+                        return;
+                    }
+                    var new_ip = data[0].ip;
+                    marks.find({$or:[{"ip":new_ip},{"country_name":country_name}]}).toArray(function(err,items2){
+                        if(items2.length>=1)
+                        {
+                            var leaderMarks = items2[0].leaderMarks;
+                        }
+                        else
+                            var leaderMarks = [];
+                        query['subparts'] = subparts;
+                        query['leaderMarks'] = leaderMarks;
+                        query['maxMarks'] = maxMarks;
+                        query['number_of_students'] = number_of_students;
+                        query['country_code'] = country_code;
+                        res.json(query);
+                        db.close();
+                    });
+                });
+            });
+        });
+    });
+});
+//marksheet END
+
 io.on('connection',function(socket)
 {
     if(socket.handshake.address != null)
@@ -1358,7 +1752,7 @@ io.on('connection',function(socket)
         users.find({"ip":ip}).toArray(function(err,items)
         {
 
-            if(items == null || typeof items[0]=="undefined")
+            if(items == null)
             {
                 db.close();
                 return;
@@ -1368,7 +1762,18 @@ io.on('connection',function(socket)
             socket.emit('country-data',items[0]);
             console.log("'numberofleaders' signal broadcasted from the server in response to " + ip.toString());
             console.log("'country-data' signal broadcasted from the server in response to " + ip.toString());
-            db.close(); 
+            if(items[0].type==2)    //marks entry
+            {
+                users.find({}).toArray(function(err,items2){
+                    console.log("'countries' signal broadcasted from the server in response to " + ip.toString());
+                    socket.emit('countries',items2);
+                    db.close();
+                });
+            }
+            else
+            {
+                db.close(); 
+            }
         });
     }); 
 
@@ -2010,6 +2415,16 @@ io.on('connection',function(socket)
 	});
     //logout END
 });
+app.use("/uploads/ayush/",express.static(__dirname + "/uploads/ayush/"));console.log("File download enabled for /uploads/ayush/");
+app.use("/uploads/sandesh/",express.static(__dirname + "/uploads/sandesh/"));console.log("File download enabled for /uploads/sandesh/");
+app.use("/uploads/aloo/",express.static(__dirname + "/uploads/aloo/"));console.log("File download enabled for /uploads/aloo/");
+app.use("/uploads/sharad/",express.static(__dirname + "/uploads/sharad/"));console.log("File download enabled for /uploads/sharad/");
+app.use("/downloads/",express.static(__dirname + "/downloads/"));console.log("File download enabled for /downloads/");
+app.use("/uploads/ayush/",express.static(__dirname + "/uploads/ayush/"));console.log("File download enabled for /uploads/ayush/");
+app.use("/uploads/sandesh/",express.static(__dirname + "/uploads/sandesh/"));console.log("File download enabled for /uploads/sandesh/");
+app.use("/uploads/aloo/",express.static(__dirname + "/uploads/aloo/"));console.log("File download enabled for /uploads/aloo/");
+app.use("/uploads/sharad/",express.static(__dirname + "/uploads/sharad/"));console.log("File download enabled for /uploads/sharad/");
+app.use("/downloads/",express.static(__dirname + "/downloads/"));console.log("File download enabled for /downloads/");
 app.use("/uploads/ayush/",express.static(__dirname + "/uploads/ayush/"));console.log("File download enabled for /uploads/ayush/");
 app.use("/uploads/sandesh/",express.static(__dirname + "/uploads/sandesh/"));console.log("File download enabled for /uploads/sandesh/");
 app.use("/uploads/aloo/",express.static(__dirname + "/uploads/aloo/"));console.log("File download enabled for /uploads/aloo/");
