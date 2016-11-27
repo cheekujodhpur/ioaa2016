@@ -1353,6 +1353,34 @@ io.on('connection',function(socket)
             return 0;
         }
         console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip);
+        var users = db.collection('users');
+        
+        users.find({"ip":ip}).toArray(function(err,items)
+        {
+
+            if(items == null || typeof items[0]=="undefined")
+            {
+                db.close();
+                return;
+            }
+            var val = items[0].number_of_votes;
+            socket.emit('num_of_leaders',val);
+            socket.emit('country-data',items[0]);
+            console.log("'numberofleaders' signal broadcasted from the server in response to " + ip.toString());
+            console.log("'country-data' signal broadcasted from the server in response to " + ip.toString());
+            db.close(); 
+        });
+    }); 
+
+    MongoClient.connect("mongodb://localhost:27017/test",function(err,db)
+    {
+        if(err)
+        {
+            console.log(err);
+            db.close();
+            return 0;
+        }
+        console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip);
         var messages = db.collection('messages');
         
         messages.find({}).toArray(function(err,items)
@@ -1973,7 +2001,7 @@ io.on('connection',function(socket)
             */
 		    collection.find({"ip":ip}).toArray(function(err,items)
 		    {
-		        collection.update({"ip":ip},{$set:{"ip":ip,"logged":false}},function(err,result){});
+		        collection.update({"ip":ip},{$set:{"ip":"","logged":false}},function(err,result){});
 		    });
             //send the end acknowleged signal
             socket.emit('end-ack');
@@ -1982,6 +2010,26 @@ io.on('connection',function(socket)
 	});
     //logout END
 });
+app.use("/uploads/ayush/",express.static(__dirname + "/uploads/ayush/"));console.log("File download enabled for /uploads/ayush/");
+app.use("/uploads/sandesh/",express.static(__dirname + "/uploads/sandesh/"));console.log("File download enabled for /uploads/sandesh/");
+app.use("/uploads/aloo/",express.static(__dirname + "/uploads/aloo/"));console.log("File download enabled for /uploads/aloo/");
+app.use("/uploads/sharad/",express.static(__dirname + "/uploads/sharad/"));console.log("File download enabled for /uploads/sharad/");
+app.use("/downloads/",express.static(__dirname + "/downloads/"));console.log("File download enabled for /downloads/");
+app.use("/uploads/ayush/",express.static(__dirname + "/uploads/ayush/"));console.log("File download enabled for /uploads/ayush/");
+app.use("/uploads/sandesh/",express.static(__dirname + "/uploads/sandesh/"));console.log("File download enabled for /uploads/sandesh/");
+app.use("/uploads/aloo/",express.static(__dirname + "/uploads/aloo/"));console.log("File download enabled for /uploads/aloo/");
+app.use("/uploads/sharad/",express.static(__dirname + "/uploads/sharad/"));console.log("File download enabled for /uploads/sharad/");
+app.use("/downloads/",express.static(__dirname + "/downloads/"));console.log("File download enabled for /downloads/");
+app.use("/uploads/ayush/",express.static(__dirname + "/uploads/ayush/"));console.log("File download enabled for /uploads/ayush/");
+app.use("/uploads/sandesh/",express.static(__dirname + "/uploads/sandesh/"));console.log("File download enabled for /uploads/sandesh/");
+app.use("/uploads/aloo/",express.static(__dirname + "/uploads/aloo/"));console.log("File download enabled for /uploads/aloo/");
+app.use("/uploads/sharad/",express.static(__dirname + "/uploads/sharad/"));console.log("File download enabled for /uploads/sharad/");
+app.use("/downloads/",express.static(__dirname + "/downloads/"));console.log("File download enabled for /downloads/");
+app.use("/uploads/ayush/",express.static(__dirname + "/uploads/ayush/"));console.log("File download enabled for /uploads/ayush/");
+app.use("/uploads/sandesh/",express.static(__dirname + "/uploads/sandesh/"));console.log("File download enabled for /uploads/sandesh/");
+app.use("/uploads/aloo/",express.static(__dirname + "/uploads/aloo/"));console.log("File download enabled for /uploads/aloo/");
+app.use("/uploads/sharad/",express.static(__dirname + "/uploads/sharad/"));console.log("File download enabled for /uploads/sharad/");
+app.use("/downloads/",express.static(__dirname + "/downloads/"));console.log("File download enabled for /downloads/");
 app.use("/uploads/ayush/",express.static(__dirname + "/uploads/ayush/"));console.log("File download enabled for /uploads/ayush/");
 app.use("/uploads/sandesh/",express.static(__dirname + "/uploads/sandesh/"));console.log("File download enabled for /uploads/sandesh/");
 app.use("/uploads/aloo/",express.static(__dirname + "/uploads/aloo/"));console.log("File download enabled for /uploads/aloo/");
