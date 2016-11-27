@@ -1,6 +1,6 @@
 #!/bin/bash
 
-rm mk/*T.html
+rm mk/*T*.html
 
 #drop the old databases
 inp='db.users.drop()'
