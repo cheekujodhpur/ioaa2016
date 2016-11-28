@@ -56,6 +56,7 @@ do
     fi    
 done < country_code_user.txt 
 
+./add_subparts.sh <data/t_subparts.txt
 ./add_subparts.sh <data/t1_subparts.txt
 ./add_subparts.sh <data/t2_subparts.txt
 ./add_subparts.sh <data/t3_subparts.txt
