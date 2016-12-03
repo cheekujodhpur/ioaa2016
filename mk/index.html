@@ -115,6 +115,7 @@
             var socket = io();
             var fb_current = '';
             var country_code_global = '';
+            var country_code_local = '';
             var num_of_leaders = '';
             socket.on('end-ack',function()
             {
@@ -296,7 +297,7 @@
                     var table_body = ""; 
                     for(var i=0;i<data.number_of_students;i++)
                     {
-                        table_body += "<tr><td>"+country_code_global+("0"+(i+1).toString()).slice(-2)+"</td><td></td>";
+                        table_body += "<tr><td>"+country_code_local+("0"+(i+1).toString()).slice(-2)+"</td><td></td>";
                         for(var j in data.subparts)
                         {
                             table_body += '<td><input type = "text" class = "form-control" name = "leaderMarks" /></td>';
@@ -324,11 +325,10 @@
                     $("#mark_table_body_E2").html('');
                     return; //blank country, do nothing
                 }
+                country_code_local = $("#country_list_select option:selected").attr("code");
                 $("#mark_table_body_T").html('<tr id = "subparts_row_T"><td></td><td>Subparts</td></tr><tr id = "maxMarks_row_T"><td></td><td>Maximum Marks</td></tr>');
-                $("#mark_table_body_E2").html('<tr id = "subparts_row_E2"><td></td><td>Subparts</td></tr><tr id = "maxMarks_row_E2"><td></td><td>Maximum Marks</td></tr>');
                 
                 send_sheetEditable(name,'t');
-                send_sheetEditable(name,'e2');
             });
             
             socket.on('countries',function(countries){
@@ -339,7 +339,7 @@
                     {
                         if(countries[i].country_name!="NULL")
                         {
-                            opt = '<option>';
+                            opt = '<option code="'+countries[i].country_code+'">';
                             opt += countries[i].country_name;
                             opt += '</option>';
                             select_elem.append(opt);
