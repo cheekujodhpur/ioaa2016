@@ -47,6 +47,8 @@ inp='db.ourMarks_T.drop()'
 echo $inp
 mongo test --eval $inp
 
+cp ./server_editable.js server.js
+
 #all the ip
 while read -r LINE;
 do 
