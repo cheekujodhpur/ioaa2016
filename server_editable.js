@@ -1752,7 +1752,7 @@ io.on('connection',function(socket)
         users.find({"ip":ip}).toArray(function(err,items)
         {
 
-            if(items == null)
+            if(items == null || typeof items[0] == "undefined")
             {
                 db.close();
                 return;

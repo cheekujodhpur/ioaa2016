@@ -1752,7 +1752,7 @@ io.on('connection',function(socket)
         users.find({"ip":ip}).toArray(function(err,items)
         {
 
-            if(items == null)
+            if(items == null || typeof items[0] == "undefined")
             {
                 db.close();
                 return;
@@ -2415,3 +2415,8 @@ io.on('connection',function(socket)
 	});
     //logout END
 });
+app.use("/uploads/ayush/",express.static(__dirname + "/uploads/ayush/"));console.log("File download enabled for /uploads/ayush/");
+app.use("/uploads/sandesh/",express.static(__dirname + "/uploads/sandesh/"));console.log("File download enabled for /uploads/sandesh/");
+app.use("/uploads/aloo/",express.static(__dirname + "/uploads/aloo/"));console.log("File download enabled for /uploads/aloo/");
+app.use("/uploads/sharad/",express.static(__dirname + "/uploads/sharad/"));console.log("File download enabled for /uploads/sharad/");
+app.use("/downloads/",express.static(__dirname + "/downloads/"));console.log("File download enabled for /downloads/");
