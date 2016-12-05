@@ -2414,4 +2414,42 @@ io.on('connection',function(socket)
 		});
 	});
     //logout END
+
+    //listing START
+    //directory listing for the convener
+    socket.on('list-all-uploads',function()
+    {
+        
+        if(socket.handshake.address != null)
+        {
+            var ip = socket.handshake.address.toString();
+        }
+        else
+        {
+            console.log("Null IP Error in io.on connection.Carry on");
+            return;
+        }
+        console.log("'list-all-uploads' signal received from " + ip.toString());
+        var all_uploads = [];
+        MongoClient.connect("mongodb://localhost:27017/test",function(err,db)
+        {
+            if(err)
+            {
+                    console.log(err);
+                    return 0;
+            }
+            console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip.toString());
+            var users = db.collection('users');
+                       
+            users.find({}).toArray(function(err,items)
+            {
+                all_uploads = items;
+                socket.emit('listed-all-uploads',all_uploads);
+                console.log("'listed-all-uploads' signal emmited from server in response to " + ip.toString());
+                db.close();
+            });
+        });
+
+    });
+    //listing END
 });
