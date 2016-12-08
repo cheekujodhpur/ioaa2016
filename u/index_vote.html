@@ -49,6 +49,7 @@
                         <li id = "cvoteb" role = "presentation" style = "display:none;"><a href = "#cvote" aria-controls="cvote" role="tab" data-toggle="tab">Cast Vote</a></li>
                         <li id = "rvoteb" role = "presentation" style = "display:none;"><a href = "#rvote" aria-controls="rvote" role="tab" data-toggle="tab">Results</a></li>
                         <li id = "fbb" role = "presentation" style = "display:none;"><a href = "#fb" aria-controls="fb" role="tab" data-toggle="tab">Feedback</a></li>
+					    <li id = "fbb_all" role = "presentation"><a href = "#fb_all" aria-controls="fb_all" role="tab" data-toggle="tab">All Feedback</a></li>
                     </ul>
             </div>
             
@@ -305,6 +306,23 @@
                         </table>
                     </div>    
                 </div>
+
+                <div role="tabpanel" class="tab-pane" id = "fb_all"> 
+                <div id = "fb_data">
+                    <table style = "table-layout:fixed;" class = "table table-bordered table-hover tablesorter" id = "fb_data_table_all">
+                        <thead>
+                        <tr>
+                            <th width = "200px" style="text-align:center"><div class="btn btn-info">Time <div class="glyphicon glyphicon-sort-by-attributes"</div></div></th>
+                            <th width = "110px" style="text-align:center"><div class="btn btn-info">Country <div class="glyphicon glyphicon-sort-by-attributes"</div></div></th>
+                            <th width = "100px" style="text-align:center"><div class="btn btn-info">QID <div class="glyphicon glyphicon-sort-by-attributes"</div></div></th>
+                            <th width = "400px"style="text-align:center"><div class="btn btn-info">Content <div class="glyphicon glyphicon-sort-by-attributes"</div></div></th>
+                        </tr>
+                        </thead>
+                        <tbody id = "fb_data_table_body_all">
+                        </tbody>
+                    </table>
+                </div>    
+            </div>
             </div>
         </div>
         
@@ -333,10 +351,12 @@
         </footer>   	
         
         <!-- jQuery -->
-        <script src = "/static/js/jquery.min.js"></script>
-        <script src = "/static/js/Chart.min.js"></script>
-        <script src = "/static/js/bootstrap.min.js"></script>
-        <script src = "/socket.io/socket.io.js"></script>
+		<script src = "/static/js/jquery.min.js"></script>
+		<script src = "/static/js/bootstrap.min.js"></script>
+        <script src = "/static/js/knockout-2.2.0.js"></script>
+        <script src = "/static/js/jquery.tablesorter.js"></script>
+		<script src = "/static/js/Chart.min.js"></script>
+		<script src = "/socket.io/socket.io.js"></script>
         <script>
             //gets the element by its id
             var TOC_file = document.getElementById('file_upload_TOC');
@@ -436,6 +456,9 @@
             var socket = io();
             var fb_current = '';
             var num_of_leaders = '';
+            var current_sort_order = [];     
+
+
             socket.on('end-ack',function()
             {
                 window.location = '/auth.html';
@@ -459,6 +482,10 @@
             $(document).ready(function()
             {
   
+                  $("#fb_data_table_all").tablesorter();
+                  $("#fb_data_table_all").on("sortEnd",function(event){
+                      current_sort_order = event.target.config.sortList;
+                      });
                 socket.emit("list-dir","/uploads");socket.emit("list-dir","/downloads");
                 var uptimer = setInterval(function()
                 {
@@ -477,6 +504,12 @@
                 {
                     window.location = '/chpass.html';
                 });
+
+                fbtimer = setInterval(function(){
+                    request_fb_all(fb_current);    
+                },10000);
+                fb_current = '';
+                request_fb_all(fb_current);
 
             });
          
@@ -503,6 +536,32 @@
                             var Field = $(field);
                             $("#fb_data_table_body").append(Field);
                         }
+                        });
+            }
+            function request_fb_all(current)
+            {
+                var uData = {};
+                uData['current'] = current;
+                $.ajax({
+                        method:"POST",
+                        url:'/request_fb',
+                        data:uData,
+                        dataType:"json"
+                        })
+                .done(function(data){
+                       var feeds = data['feeds'];
+                 
+                        $("#fb_data_table_body_all").html('');
+                        for(var feed in feeds)
+                        {
+                            var ll = '';
+                            for(var ff in feeds[feed].content) ll = ll + feeds[feed].content[ff] + '<br />';
+                            var field = '<tr id = "fb_row"><td>'+feeds[feed].time + '</td><td>' + feeds[feed].country_code+'</td><td>'+feeds[feed].qid+'</td><td>'+ll+'</td></tr>';
+                            var Field = $(field);
+                            $("#fb_data_table_body_all").append(Field);
+                        }
+                        $("#fb_data_table_all").trigger('update');
+                        setTimeout(function(){ $("#fb_data_table_all").trigger( 'sorton', [ current_sort_order ] ) },10);
                         });
             }
 
@@ -791,13 +850,26 @@
                 }   
                 fb_current = q;
                 request_fb(fb_current);
+                reset_fb_timer();
                 $("#fbb").show();
+                $("#fbb_all").show();
             });
+
+            function reset_fb_timer()
+            {
+                clearInterval(fbtimer);
+                
+                fbtimer = setInterval(function(){
+                    request_fb_all(fb_current);    
+                },10000);
+                request_fb_all(fb_current);
+            }
 
             //FEEDBACK DISABLE
             socket.on('fbDisable',function(){
                 $("#nemo a:first").tab('show');
                 $("#fbb").hide();
+                $("#fbb_all").hide();
             });
 
             $("#fb_submit").click(function(e){
