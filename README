@@ -1,0 +1,9 @@
+=== Hardcoded Positions ===
+
+Look for TOC everywhere and copy that for others
+
+- pr/index.html
+- server_editable.js -> send_list_dir
+- su/index.html for reading the tabs, using new words
+- su/index.html for sending stuff
+- u/index_vote.html for updating upload form
