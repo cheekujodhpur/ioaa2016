@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset = "utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>IoAA 2016 - Bhubaneshwar, India</title>
+
+		<!--Bootstrap-->
+		<link href = "/static/css/bootstrap.min.css" rel = "stylesheet" />
+		<!!--Custom CSS-->
+		<link href = "/static/css/main.css" rel = "stylesheet" />
+
+        <link href = "media/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+        <link href = "media/favicon.ico" rel="icon" type="image/x-icon"/>
+    </head>
+	<body>
+		<div id = "sp-header-wrapper" class = "navbar navbar-defaul navbar-fixed-top">
+			<div class = "container-fluid">
+				<div class = "navbar-header">
+					<a class="navbar-brand" href = "http://www.ioaa2016.in">
+						<img alt="ipho-logo" src = "media/ioaa-logo.png" />
+					</a>
+				</div>
+			</div>
+			<div id = "tifr-mast">
+				<div id = "tifr-logo"><img class = "right" alt="tifr-logo" src = "/media/tifr-logo-s.png" />
+				<br />
+				<div id = "out-button" class="right">
+				<button id = "chpass-button" type = "button" class = "btn btn-default btn-sm">Change Password</button>
+				<button id = "logout-button" type = "button"  class = "btn btn-default btn-sm">
+					<span class="glyphicon glyphicon-log-out"></span> Log out
+				</button>
+				</div>
+				<br />
+				</div>
+				<div id = "hbc-tifr" style = "position:relative;left:110px">
+					<div id = "hbc">Homi Bhabha Centre for Science Education</div>
+					<div id = "tifr">Tata Institute of Fundamental Research</div>
+				</div>
+			</div>
+		</div>
+        <div id = "document">
+			<div role = "tabpanel">
+				<ul class = "nav nav-pills" id = "nemo">
+					<li role = "presentation" class = "active"><a href = "#home" aria-controls="home" role="tab" data-toggle="tab" onclick = 'socket.emit("list-dir","/downloads");'>Home</a></li>
+                    <li id = "all_uploads_b" role = "presentation"><a href = "#all_uploads" aria-controls="all_uploads" data-toggle="tab" onclick = 'socket.emit("list-all-uploads");'>Uploads</a></li>
+                </ul>
+			</div>
+			<div class = "tab-content">
+				<div role="tabpanel" class="tab-pane active" id = "home">
+				    
+                </div>
+				<div role="tabpanel" class="tab-pane" id = "all_uploads">
+                </div>
+			</div>	
+		</div>
+        <div id="sidebar-wrapper" >
+            <table class="table" id = "message-board">
+            <thead>
+                <tr><th>Message Board</th></tr>
+            </thead>
+            <tbody id="message-board-body">
+            </tbody>
+            </table>
+        </div>
+       <footer id="sp-footer-wrapper" style="bottom:0px;">
+                	<div class="container">
+                        <div class="row-fluid" id="footer">
+                             <div id="sp-footer1" class="span6" style="text-align:center">
+                                 <span>Copyright &copy; Homi Bhabha Centre for Science Education, TIFR</span>
+                                 <br /><span>Mumbai - India </span> 
+                             </div>
+                         </div>
+                	</div>
+        </footer>   	
+		
+        <!-- jQuery -->
+		<script src = "/static/js/jquery.min.js"></script>
+		<script src = "/static/js/bootstrap.min.js"></script>
+		<script src = "/static/js/jquery.tablesorter.js"></script>
+		<script src = "/static/js/Chart.min.js"></script>
+		<script src = "/socket.io/socket.io.js"></script>
+		<script>
+            var socket = io();
+            //document ready script
+			$(document).ready(function()
+            {
+                var uptimer = setInterval(function(){
+				socket.emit('list-all-uploads');
+                },10000);
+
+                
+	
+				//show tab
+				$('#nemo a:first').tab('show');
+				//socket.io controls
+				$("#logout-button").click(function(){
+					socket.emit('end');
+				});
+				$("#chpass-button").click(function(){
+					window.location = '/chpass.html';
+				});
+		    });
+
+            function sendPrinted(elem)
+            {
+                var type = $(elem).attr('data-q');
+                var ip = $(elem).attr('data-ip');
+                socket.emit('flagPrint',$(elem).is(':checked'),type,ip);
+            }
+            function sendPacked(elem)
+            {
+                var type = $(elem).attr('data-q');
+                var ip = $(elem).attr('data-ip');
+                socket.emit('flagPack',$(elem).is(':checked'),type,ip);
+            }
+
+            //SOCKET SIGNALS
+            socket.on('disconnect',function()
+            {
+                console.log('Disconnected');
+                socket.io.reconnect();
+            }); 
+            
+            socket.on('end-ack',function() 
+            { 
+                 window.location = '/auth.html'; 
+            }); 
+
+            socket.on('super_refresh',function()
+            {
+                location.reload();
+            });
+
+            
+            //show the message on board
+            socket.on("message-sent",function(message_table){
+                $("#message-board-body").html('');
+                for(var i in message_table)
+                {
+                    $("#message-board").append('<tr><td>' + message_table[i].message + '</td><td><button type="button" class="btn btn-default btn-sm message-remove" id = "'+message_table[i].id+'"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>   </td></tr>');
+                }
+                //delete-message
+                $(".message-remove").click(function(e){
+                    e.preventDefault();
+                socket.emit('message-delete',$(this).attr("id"));
+                });
+            });
+            socket.on('listed-all-uploads',function(all_uploads)
+            {
+                var table = '<table class="table table-bordered table-hover" id = "all_uploads_table" style="table-layout:fixed;width:500px">';
+                for(var i in all_uploads)
+                {
+                if(all_uploads[i].country_code != "NULL")
+                {
+                table += '<thead><tr><th>' + all_uploads[i].country_code.toString() + '</th><th>Printed</th><th>Packed</th></tr></thead>';
+                    table += "<tbody>";
+                    if(all_uploads[i].TOC)
+                    {
+                        var printchecked = all_uploads[i].TOC_printed;
+                        var packchecked = all_uploads[i].TOC_packed;
+                        var prcheckstr = '';
+                        var pacheckstr = '';
+                        if(printchecked)
+                            prcheckstr = 'checked';
+                        if(packchecked)
+                            pacheckstr = 'checked';
+                        table += '<tbody><tr class="success"><td>E-1</td><td class = "prcheck"><input '+prcheckstr+' data-q = "TOC" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "TOC" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
+                    }
+                    else
+                    {    
+                        table += '<tr class="warning"><td>E-1</td></tr>';
+                    }
+                    if(all_uploads[i].E2)
+                    {
+                        var printchecked = all_uploads[i].E2_printed;
+                        var packchecked = all_uploads[i].E2_packed;
+                        var prcheckstr = '';
+                        var pacheckstr = '';
+                        if(printchecked)
+                            prcheckstr = 'checked';
+                        if(packchecked)
+                            pacheckstr = 'checked';
+                        table += '<tbody><tr class="success"><td>E-1</td><td class = "prcheck"><input '+prcheckstr+' data-q = "E2" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "E2" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
+                    }
+                    else
+                    {    
+                        table += '<tr class="warning"><td>E-2</td></tr>';
+                    }
+                    if(all_uploads[i].E1a)
+                    {
+                        var printchecked = all_uploads[i].E1a_printed;
+                        var packchecked = all_uploads[i].E1a_packed;
+                        var prcheckstr = '';
+                        var pacheckstr = '';
+                        if(printchecked)
+                            prcheckstr = 'checked';
+                        if(packchecked)
+                            pacheckstr = 'checked';
+                        table += '<tbody><tr class="success"><td>E-1 Ans</td><td class = "prcheck"><input '+prcheckstr+' data-q = "E1a" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "E1a" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
+                    }
+                    else
+                    {    
+                        table += '<tr class="warning"><td>E-1 Ans</td></tr>';
+                    }
+                    if(all_uploads[i].E2a)
+                    {
+                        var printchecked = all_uploads[i].E2a_printed;
+                        var packchecked = all_uploads[i].E2a_packed;
+                        var prcheckstr = '';
+                        var pacheckstr = '';
+                        if(printchecked)
+                            prcheckstr = 'checked';
+                        if(packchecked)
+                            pacheckstr = 'checked';
+                        table += '<tbody><tr class="success"><td>E-2 Ans</td><td class = "prcheck"><input '+prcheckstr+' data-q = "E2a" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "E2a" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
+                    }
+                    else
+                    {    
+                        table += '<tr class="warning"><td>E-2 Ans</td></tr>';
+                    }
+                    if(all_uploads[i].C1)
+                    {
+                        var printchecked = all_uploads[i].C1_printed;
+                        var packchecked = all_uploads[i].C1_packed;
+                        var prcheckstr = '';
+                        var pacheckstr = '';
+                        if(printchecked)
+                            prcheckstr = 'checked';
+                        if(packchecked)
+                            pacheckstr = 'checked';
+                        table += '<tbody><tr class="success"><td>Cover Page 1</td><td class = "prcheck"><input '+prcheckstr+' data-q = "C1" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "C1" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
+                    }
+                    else
+                    {    
+                        table += '<tr class="warning"><td>Cover Page 1</td></tr>';
+                    }
+                    if(all_uploads[i].C2)
+                    {
+                        var printchecked = all_uploads[i].C2_printed;
+                        var packchecked = all_uploads[i].C2_packed;
+                        var prcheckstr = '';
+                        var pacheckstr = '';
+                        if(printchecked)
+                            prcheckstr = 'checked';
+                        if(packchecked)
+                            pacheckstr = 'checked';
+                        table += '<tbody><tr class="success"><td>Cover Page 2</td><td class = "prcheck"><input '+prcheckstr+' data-q = "C2" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "C2" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
+                    }
+                    else
+                    {    
+                        table += '<tr class="warning"><td>Cover Page 2</td></tr>';
+                    }
+                    table += "</tbody>";
+                }
+                }
+                table += "</table>";
+                var Table = $(table);
+                $("#all_uploads").html(Table);
+             });
+		</script>
+	</body>
+</html>

@@ -199,9 +199,9 @@
                         <thead>
                         <tr>
                             <th width = "100px">Country Code</th>
-                            <th width = "100px">E1</th>
+                            <th width = "100px">TOC</th>
                             <th width = "100px">E2</th>
-                            <th width = "100px">E1-Ans</th>
+                            <th width = "100px">TOC-Ans</th>
                             <th width = "100px">E2-Ans</th>
                             <th width = "200px">Cover Pg1</th>
                             <th width = "200px">Cover Pg2</th>
@@ -648,9 +648,9 @@
                 var table = '';
                 var users_logged = 0;
                 var num_votes = 0;
-                var E1_u = 0;
-                var E1_pr = 0;
-                var E1_pck = 0;
+                var TOC_u = 0;
+                var TOC_pr = 0;
+                var TOC_pck = 0;
                 var E2_u = 0;
                 var E2_pr = 0;
                 var E2_pck = 0;
@@ -680,30 +680,30 @@
                         {
                             table += '<tr><td><button type="button" class = "btn btn-info">' + all_uploads[i].country_code + '</button></td>';
                         }
-                        if(all_uploads[i].E1)
+                        if(all_uploads[i].TOC)
                         {
-                            if(all_uploads[i].E1_printed && all_uploads[i].E1_packed)
+                            if(all_uploads[i].TOC_printed && all_uploads[i].TOC_packed)
                             {
-                                table += '<td><button type="button" class="btn btn-success">E-1</button></td>';
-                                E1_u += 1;
-                                E1_pr += 1;
-                                E1_pck += 1;
+                                table += '<td><button type="button" class="btn btn-success">TOC</button></td>';
+                                TOC_u += 1;
+                                TOC_pr += 1;
+                                TOC_pck += 1;
                             }
-                            else if(all_uploads[i].E1_printed) 
+                            else if(all_uploads[i].TOC_printed) 
                             { 
-                                table += '<td><button type="button" class="btn btn-primary">E-1</button></td>';
-                                E1_u += 1;
-                                E1_pr += 1;
+                                table += '<td><button type="button" class="btn btn-primary">TOC</button></td>';
+                                TOC_u += 1;
+                                TOC_pr += 1;
                             }
                             else
                             {
-                                table += '<td><button type="button" class="btn btn-warning">E-1</button></td>';
-                                E1_u += 1;
+                                table += '<td><button type="button" class="btn btn-warning">TOC</button></td>';
+                                TOC_u += 1;
                             }
                         }
                         else
                         {   
-                            table += '<td><button type="button" class="btn btn-danger">E-1</button></td>';
+                            table += '<td><button type="button" class="btn btn-danger">TOC</button></td>';
                         }
                         if(all_uploads[i].E2)
                         {
@@ -835,7 +835,7 @@
                 }
                 var table_stat = '';
                 table_stat += '<tr><td>Users Logged: ' + users_logged + '<br /> Total Votes: ' + num_votes +' </td>';
-                table_stat += '<td>Uploaded: ' + E1_u + '<br />Printed: ' + E1_pr + '<br />Packed: ' + E1_pck + '</td>';
+                table_stat += '<td>Uploaded: ' + TOC_u + '<br />Printed: ' + TOC_pr + '<br />Packed: ' + TOC_pck + '</td>';
                 table_stat += '<td>Uploaded: ' + E2_u + '<br />Printed: ' + E2_pr + '<br />Packed: ' + E2_pck + '</td>';
                 table_stat += '<td>Uploaded: ' + E1a_u + '<br />Printed: ' + E1a_pr + '<br />Packed: ' + E1a_pck + '</td>';
                 table_stat += '<td>Uploaded: ' + E2a_u + '<br />Printed: ' + E2a_pr + '<br />Packed: ' + E2a_pck + '</td>';

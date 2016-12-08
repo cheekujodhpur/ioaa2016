@@ -276,6 +276,10 @@ app.get('/', function (req, res)
                 {
                     res.sendFile(__dirname + '/mk/index.html');
                 }
+                else if(type == 3)
+                {
+                    res.sendFile(__dirname + '/pr/index.html');
+                }
                 else
                 {
                     res.sendFile('/chpass.html');
@@ -1307,7 +1311,7 @@ app.post('/list_dir',function(req,res)
                             }
                             if(items[0].logged == true)
                             {
-                                if(items[0].T1_printed)result['T1_printed']=true;else result['T1_printed']=false;
+                                if(items[0].TOC_printed)result['TOC_printed']=true;else result['TOC_printed']=false;
                                 if(items[0].T2_printed)result['T2_printed']=true;else result['T2_printed']=false;
                                 if(items[0].T3_printed)result['T3_printed']=true;else result['T3_printed']=false;
                                 if(items[0].E1_printed)result['E1_printed']=true;else result['E1_printed']=false;
@@ -2452,4 +2456,62 @@ io.on('connection',function(socket)
 
     });
     //listing END
+    
+    //flag stuff
+    //packed and printed
+    socket.on('flagPrint',function(val,type,ipi){
+		
+        if(socket.handshake.address != null)
+        {
+            var ip = socket.handshake.address.toString();
+        }
+        else
+        {
+            console.log("Null IP Error in io.on connection.Carry on");
+            return;
+        }
+		console.log("'flagPrint' signal received from " + ip.toString());
+		MongoClient.connect("mongodb://localhost:27017/test",function(err,db)
+        {
+		    if(err)
+		    {
+			    console.log(err);
+			    return 0;
+		    }
+            console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip.toString());
+		    var users = db.collection('users');
+            var query = {};
+            var field = type + '_printed';
+            query[field] = val;
+		    users.update({"ip":ipi},{$set:query},function(err,result){db.close();});
+        });
+    });
+    socket.on('flagPack',function(val,type,ipi){
+		
+        if(socket.handshake.address != null)
+        {
+            var ip = socket.handshake.address.toString();
+        }
+        else
+        {
+            console.log("Null IP Error in io.on connection.Carry on");
+            return;
+        }
+		console.log("'flagPack' signal received from " + ip.toString());
+		MongoClient.connect("mongodb://localhost:27017/test",function(err,db)
+        {
+		    if(err)
+		    {
+			    console.log(err);
+			    return 0;
+		    }
+            console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip.toString());
+		    var users = db.collection('users');
+            var query = {};
+            var field = type + '_packed';
+            query[field] = val;
+		    users.update({"ip":ipi},{$set:query},function(err,result){db.close();});
+        });
+    });
+    //flag stuff END
 });
