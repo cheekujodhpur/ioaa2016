@@ -7,7 +7,7 @@
 
 mkdir -p ./uploads/$1
 #create entry in the database
-inp='db.users.insert({"user":"'$1'","country_name":"'$2'","country_code":"'$3'","number_of_votes":"'$4'","number_of_students":"'$5'","type":1,"pass":"ioaa2016","logged":false,"first":false})'
+inp='db.users.insert({"user":"'$1'","country_name":"'$2'","country_code":"'$3'","number_of_votes":"'$4'","number_of_students":"'$5'","type":'$6',"pass":"ioaa2016","logged":false,"first":false})'
 echo $inp
 mongo test --eval $inp
 

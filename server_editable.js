@@ -98,6 +98,9 @@ app.get('/media/tifr-logo-s.png', function(req,res){res.sendFile(__dirname+'/med
 app.get('/static/fonts/glyphicons-halflings-regular.woff2', function(req,res){res.sendFile(__dirname+'/static/fonts/glyphicons-halflings-regular.woff2');});
 app.get('/static/fonts/glyphicons-halflings-regular.woff', function(req,res){res.sendFile(__dirname+'/static/fonts/glyphicons-halflings-regular.woff');});
 
+app.use("/media",express.static(__dirname + "/media"));console.log("File download enabled for /media");
+app.use("/static",express.static(__dirname + "/static"));console.log("File download enabled for /static");
+
 //authentication page
 app.get('/auth.html',function(req,res)
 {
