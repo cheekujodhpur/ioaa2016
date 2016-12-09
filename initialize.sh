@@ -1,6 +1,12 @@
 #!/bin/bash
 
 rm mk/*T*.html
+rm -r ./uploads
+rm -r ./downloads
+rm -r ./common
+mkdir ./uploads
+mkdir ./downloads
+mkdir ./common
 
 #drop the old databases
 inp='db.users.drop()'
