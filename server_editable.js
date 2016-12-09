@@ -1186,7 +1186,10 @@ app.post('/list_dir',function(req,res)
 		    var collection = db.collection('users');
             collection.find({"ip":ip}).toArray(function(err,items)
             {
-                username = items[0].user;
+		if(typeof items[0]!=="undefined")
+		{
+                    username = items[0].user;
+		}
                 if(directory_path=='uploads')
                {
                     directory_path = __dirname + "/uploads/" + username + "/";
@@ -1226,7 +1229,7 @@ app.post('/list_dir',function(req,res)
                         
                         collection.find({"ip":ip}).toArray(function(err,items)
                         {
-                            if(items == null)
+                            if(items == null || typeof items[0]=="undefined")
                             {
                                 console.log(err);
                                 console.log("Something went wrong in list-dir signal.Pray to the Gods and carry on!");
@@ -1305,9 +1308,10 @@ app.post('/list_dir',function(req,res)
                         
                             var result = {};
                             
-                            if(err)
+                            if(err || typeof items[0]=="undefined")
                             {
                                  console.log(err);
+				 return;
                             }
                             if(items[0].logged == true)
                             {
