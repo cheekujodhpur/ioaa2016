@@ -283,6 +283,22 @@ app.get('/', function (req, res)
                 {
                     res.sendFile(__dirname + '/pr/index.html');
                 }
+                else if(type == 4)
+                {
+                    res.sendFile(__dirname + '/guest/index.html');
+                }
+                else if(type == 5)
+                {
+                    res.sendFile(__dirname + '/exec/index.html');
+                }
+                else if(type == 6)
+                {
+                    res.sendFile(__dirname + '/disp/index.html');
+                }
+                else if(type == 7)
+                {
+                    res.sendFile(__dirname + '/god/index.html');
+                }
                 else
                 {
                     res.sendFile('/chpass.html');

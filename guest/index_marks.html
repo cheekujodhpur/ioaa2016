@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset = "utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>IPhO 2015 - Mumbai, India</title>
+
+		<!--Bootstrap-->
+		<link href = "/static/css/bootstrap.min.css" rel = "stylesheet" />
+		<!!--Custom CSS-->
+		<link href = "/static/css/main.css" rel = "stylesheet" />
+
+        <link href = "media/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+        <link href = "media/favicon.ico" rel="icon" type="image/x-icon"/>
+	</head>
+
+    <body>
+        <div id = "sp-header-wrapper" class = "navbar navbar-defaul navbar-fixed-top">
+			<div class = "container-fluid">
+                <div class = "navbar-header">
+                    <a class="navbar-brand" href = "http://www.ipho2015.in">
+                        <img alt="ipho-logo" src = "/media/ipho-logo1.png" />
+                    </a>
+                </div>
+			</div>
+			<div id = "tifr-mast">
+				<div id = "tifr-logo"><img class = "right" alt="tifr-logo" src = "/media/tifr-logo-s.png" />
+				<br />
+				<div id = "out-button" class="right">
+				<button id = "chpass-button" type = "button" class = "btn btn-default btn-sm">Change Password</button>
+				<button id = "logout-button" type = "button"  class = "btn btn-default btn-sm">
+					<span class="glyphicon glyphicon-log-out"></span> Log out
+				</button>
+				</div>
+				<br />
+				</div>
+				<div id = "hbc-tifr" style = "position:relative;left:110px;">
+					<div id = "hbc">Homi Bhabha Centre for Science Education</div>
+					<div id = "tifr">Tata Institute of Fundamental Research</div>
+				</div>
+			</div>
+		</div>
+		
+        <div id = "document">
+            <div role = "tabpanel">
+                    <ul class = "nav nav-pills" id = "nemo">
+                        <li role = "presentation" class="active"><a href = "#experiment" aria-controls="marks" role="tab" data-toggle="tab">Experimental</a></li>
+                    </ul>
+            </div>
+            
+            <div class = "tab-content">
+                <div role="tabpanel" class="tab-pane active" id = "experiment">
+                    <form id = "form_marks_E1">
+                        <table class = "table table-striped" id = "mark_table_E1" style="table-layout:fixed;">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                </tr>
+                            </thead>
+                            <tbody id = "mark_table_body_E1">
+                                <tr id = "subparts_row_E1">
+                                    <td></td>
+                                    <td>Subparts</td>
+                                </tr>
+                                <tr id = "maxMarks_row_E1">
+                                    <td></td>
+                                    <td>Maximum Marks</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                    <button type="submit" class="btn btn-default save_button" data-type = "e1">Save</button>
+                    <form id = "form_marks_E2">
+                        <table class = "table table-striped" id = "mark_table_E2" style="table-layout:fixed;">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                </tr>
+                            </thead>
+                            <tbody id = "mark_table_body_E2">
+                                <tr id = "subparts_row_E2">
+                                    <td></td>
+                                    <td>Subparts</td>
+                                </tr>
+                                <tr id = "maxMarks_row_E2">
+                                    <td></td>
+                                    <td>Maximum Marks</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                    <button type="submit" class="btn btn-default save_button" data-type = "e2">Save</button>
+                    <button type="submit" class="btn btn-success submit_button" data-type = "e">Submit</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="sidebar-wrapper" >
+            <table class="table" id = "message-board">
+            <thead id = "message-board-head">
+                <tr><th>Message Board</th></tr>
+            </thead>
+            <tbody id="message-board-body"></tbody> 
+            </table>
+        </div>
+  <footer id="sp-footer-wrapper" style="bottom:0px;">
+                	<div class="container">
+                        <div class="row-fluid" id="footer">
+                             <div id="sp-footer1" class="span6" style="text-align:center">
+                                 <span>Copyright &copy; Homi Bhabha Centre for Science Education, TIFR</span>
+                                 <br /><span>Mumbai - India </span> 
+                             </div>
+                         </div>
+                	</div>
+        </footer>   	
+        
+        <!-- jQuery -->
+        <script src = "/static/js/jquery.min.js"></script>
+        <script src = "/static/js/Chart.min.js"></script>
+        <script src = "/static/js/bootstrap.min.js"></script>
+        <script src = "/socket.io/socket.io.js"></script>
+        <script>
+
+            //to protect from unload
+            window.onbeforeunload = function() 
+            {
+                //send directory listing signal before refesh
+                if($("#cvoteb").is(":visible"))
+                    return 'You will lose your chance to vote if you continue. Are you sure?';
+            };
+            
+            var socket = io();
+            var fb_current = '';
+            var country_code_global = '';
+            var num_of_leaders = '';
+            socket.on('end-ack',function()
+            {
+                window.location = '/auth.html';
+            });
+
+            socket.on('super_refresh',function()
+            {
+                location.reload();
+            });
+
+
+            socket.on('disconnect',function()
+            {
+                console.log('Disconnected');
+                socket.io.reconnect();
+            });	
+           
+            socket.on('numofleaders',function(value)
+            {
+                num_of_leaders = value;
+            });
+            //DONT PUT THIS IN DOCUMENT READY SCRIPT
+            //function to disableF5
+            function disableF5(e) { if ((e.which || e.keyCode) == 116) e.preventDefault(); };
+                
+            //document ready script
+            $(document).ready(function()
+            {
+                var uptimer = setInterval(function()
+                {
+                    socket.emit('list-dir','/uploads');
+                    socket.emit('list-dir','/downloads');
+                },10000);
+                $('#nemo a:first').tab('show');
+                //socket.io controls
+                $("#logout-button").click(function()
+                {
+                    socket.emit('end');
+                });
+                $("#chpass-button").click(function()
+                {
+                    window.location = '/chpass.html';
+                });
+
+                $(".submit_button").click(function(){
+                    var type_question = $(this).attr('data-type');
+                    if(type_question=='t')
+                    {
+                        submit_marks('t1');
+                        submit_marks('t2');
+                        submit_marks('t3');
+                    }
+                    else if(type_question=='e')
+                    {
+                        if(validateMarks('e1') && validateMarks('e2'))
+                        {
+                            submit_marks('e1');
+                            submit_marks('e2');
+                        }
+                    }
+                });
+
+                function validateMarks(type_question)
+                {
+                    if(type_question=='t1')
+                        var data = $("#form_marks_T1").serializeArray();
+                    else if(type_question=='t2')
+                        var data = $("#form_marks_T2").serializeArray();
+                    else if(type_question=='t3')
+                        var data = $("#form_marks_T3").serializeArray();
+                    else if(type_question=='e1')
+                        var data = $("#form_marks_E1").serializeArray();
+                    else if(type_question=='e2')
+                        var data = $("#form_marks_E2").serializeArray();
+                    var ajaxData = {};
+                    var maxMarks = []
+                    //CAREFUL, hard coded line below
+                    if(type_question=='t1')
+                        var num_subparts = $("#mark_table_body_T1").find("tr:first td").length-2;
+                    else if(type_question=='t2')
+                        var num_subparts = $("#mark_table_body_T2").find("tr:first td").length-2;
+                    else if(type_question=='t3')
+                        var num_subparts = $("#mark_table_body_T3").find("tr:first td").length-2;
+                    else if(type_question=='e1')
+                        var num_subparts = $("#mark_table_body_E1").find("tr:first td").length-2;
+                    else if(type_question=='e2')
+                        var num_subparts = $("#mark_table_body_E2").find("tr:first td").length-2;
+                    for(var j = 0;j<num_subparts;j++)
+                    {
+                        maxMarks.push(parseFloat(data[j].value));
+                    }
+                    for(var i = 1;i<data.length/num_subparts;i++)
+                    {
+                        for(var j = 0;j<num_subparts;j++)
+                        {
+                            var tmp_mark = data[i*num_subparts+j].value;
+                            if(tmp_mark=='')
+                            {
+                                alert("No field can be empty!");
+                                return 0;
+                            }
+                            if(isNaN(parseFloat(tmp_mark)))
+                            {
+                                alert("Not a number");
+                                return 0;
+                            }
+                            if((tmp_mark.split('.')[1] || []).length > 1)
+                            {
+                                alert("Least count is 0.1");
+                                return 0;
+                            }
+                            if(parseFloat(tmp_mark)>maxMarks[j])
+                            {
+                                alert("Marks should be less than max marks");
+                                return 0;
+                            }
+                            ajaxData[(i-1)*num_subparts+j] = parseFloat(tmp_mark);
+                        }
+                    }
+                    return 1;
+                }
+
+                
+                function submit_marks(type_question)
+                {
+                    if(type_question=='t1')
+                        var data = $("#form_marks_T1").serializeArray();
+                    else if(type_question=='t2')
+                        var data = $("#form_marks_T2").serializeArray();
+                    else if(type_question=='t3')
+                        var data = $("#form_marks_T3").serializeArray();
+                    else if(type_question=='e1')
+                        var data = $("#form_marks_E1").serializeArray();
+                    else if(type_question=='e2')
+                        var data = $("#form_marks_E2").serializeArray();
+                    var ajaxData = {};
+                    var maxMarks = []
+                    //CAREFUL, hard coded line below
+                    if(type_question=='t1')
+                        var num_subparts = $("#mark_table_body_T1").find("tr:first td").length-2;
+                    else if(type_question=='t2')
+                        var num_subparts = $("#mark_table_body_T2").find("tr:first td").length-2;
+                    else if(type_question=='t3')
+                        var num_subparts = $("#mark_table_body_T3").find("tr:first td").length-2;
+                    else if(type_question=='e1')
+                        var num_subparts = $("#mark_table_body_E1").find("tr:first td").length-2;
+                    else if(type_question=='e2')
+                        var num_subparts = $("#mark_table_body_E2").find("tr:first td").length-2;
+                    for(var j = 0;j<num_subparts;j++)
+                    {
+                        maxMarks.push(parseFloat(data[j].value));
+                    }
+                    for(var i = 1;i<data.length/num_subparts;i++)
+                    {
+                        for(var j = 0;j<num_subparts;j++)
+                        {
+                            var tmp_mark = data[i*num_subparts+j].value;
+                            if(tmp_mark=='')
+                            {
+                                alert("No field can be empty!");
+                                return;
+                            }
+                            if(isNaN(parseFloat(tmp_mark)))
+                            {
+                                alert("Not a number");
+                                return;
+                            }
+                            if((tmp_mark.split('.')[1] || []).length > 1)
+                            {
+                                alert("Least count is 0.1");
+                                return;
+                            }
+                            if(parseFloat(tmp_mark)>maxMarks[j])
+                            {
+                                alert("Marks should be less than max marks");
+                                return;
+                            }
+                            ajaxData[(i-1)*num_subparts+j] = parseFloat(tmp_mark);
+                        }
+                    }
+                    if(type_question=='t1')
+                        var destination_url = 'submit_mark_T1';
+                    else if(type_question=='t2')
+                        var destination_url = 'submit_mark_T2';
+                    else if(type_question=='t3')
+                        var destination_url = 'submit_mark_T3';
+                    else if(type_question=='e1')
+                        var destination_url = 'submit_mark_E1';
+                    else if(type_question=='e2')
+                        var destination_url = 'submit_mark_E2';
+                    $.ajax({
+                            method:"POST",
+                            timeout:4000,
+                            url:destination_url,
+                            data:ajaxData
+                            }).
+                    done(function(data)
+                    {
+                            window.open(data.filename,"_blank");
+                            send_sheetEditable(type_question);
+                    });
+                }
+
+                $(".save_button").click(function(){
+                    var type_question = $(this).attr('data-type');
+                    if(type_question=='t1')
+                        var data = $("#form_marks_T1").serializeArray();
+                    else if(type_question=='t2')
+                        var data = $("#form_marks_T2").serializeArray();
+                    else if(type_question=='t3')
+                        var data = $("#form_marks_T3").serializeArray();
+                    else if(type_question=='e1')
+                        var data = $("#form_marks_E1").serializeArray();
+                    else if(type_question=='e2')
+                        var data = $("#form_marks_E2").serializeArray();
+                    var ajaxData = {};
+                    var maxMarks = []
+                    //CAREFUL, hard coded line below
+                    if(type_question=='t1')
+                        var num_subparts = $("#mark_table_body_T1").find("tr:first td").length-2;
+                    else if(type_question=='t2')
+                        var num_subparts = $("#mark_table_body_T2").find("tr:first td").length-2;
+                    else if(type_question=='t3')
+                        var num_subparts = $("#mark_table_body_T3").find("tr:first td").length-2;
+                    else if(type_question=='e1')
+                        var num_subparts = $("#mark_table_body_E1").find("tr:first td").length-2;
+                    else if(type_question=='e2')
+                        var num_subparts = $("#mark_table_body_E2").find("tr:first td").length-2;
+                    for(var j = 0;j<num_subparts;j++)
+                    {
+                        maxMarks.push(parseFloat(data[j].value));
+                    }
+                    for(var i = 1;i<data.length/num_subparts;i++)
+                    {
+                        for(var j = 0;j<num_subparts;j++)
+                        {
+                            var tmp_mark = data[i*num_subparts+j].value;
+                            if(isNaN(parseFloat(tmp_mark)))
+                            {
+                                alert("Not a number");
+                                return;
+                            }
+                            if((tmp_mark.split('.')[1] || []).length > 1)
+                            {
+                                alert("Least count is 0.1");
+                                return;
+                            }
+                            if(parseFloat(tmp_mark)>maxMarks[j])
+                            {
+                                alert("Marks should be less than max marks");
+                                return;
+                            }
+                            ajaxData[(i-1)*num_subparts+j] = parseFloat(tmp_mark);
+                        }
+                    }
+                    if(type_question=='t1')
+                        var destination_url = 'save_mark_T1';
+                    else if(type_question=='t2')
+                        var destination_url = 'save_mark_T2';
+                    else if(type_question=='t3')
+                        var destination_url = 'save_mark_T3';
+                    else if(type_question=='e1')
+                        var destination_url = 'save_mark_E1';
+                    else if(type_question=='e2')
+                        var destination_url = 'save_mark_E2';
+                    $.ajax({
+                            method:"POST",
+                            timeout:4000,
+                            url:destination_url,
+                            data:ajaxData
+                            }).
+                    done(function(data){alert("saved!");});
+                });
+
+            });
+           
+            function send_sheetEditable(type_question)
+            {
+                if(type_question=='t1')
+                    var destination_url = 'sheetEditableT1';
+                else if(type_question=='t2')
+                    var destination_url = 'sheetEditableT2';
+                else if(type_question=='t3')
+                    var destination_url = 'sheetEditableT3';
+                else if(type_question=='e1')
+                    var destination_url = 'sheetEditableE1';
+                else if(type_question=='e2')
+                    var destination_url = 'sheetEditableE2';
+                $.ajax
+                ({
+                    method:'POST',
+                    url : destination_url
+                }).done(function(data)
+                {
+                    if(!data.valid)
+                    {
+                        $(".save_button").each(function(){$(this).remove();});
+                        $(".submit_button").each(function(){$(this).remove();});
+                        if(type_question=='e1')
+                        {    
+                            var nelem = '<a target = "_blank" href = "marks/' + country_code_global + '_E1.html">E-1 Marksheet</a>';
+                            $("#form_marks_E1").html(nelem);
+                        }
+                        else if(type_question=='e2')
+                        {
+                            var nelem = '<a target = "_blank" href = "marks/' + country_code_global + '_E2.html">E-2 Marksheet</a>';
+                            $("#form_marks_E2").html(nelem);
+                        }
+                        return;
+                    }
+                    var table_subparts_body = "";
+                    var table_maxMarks_body = "";
+                    for(var i in data.subparts)
+                    {
+                        table_subparts_body += "<td>" + data.subparts[i] + "<input type = 'hidden' name = 'maxMarks' value = " + data.maxMarks[i] + " /></td>";
+                        table_maxMarks_body += "<td>" + data.maxMarks[i] + "</td>";
+                    }
+                    var subparts_row;
+                    var maxMarks_row;
+                    var table_body_elem;
+                    if(type_question=='t1')
+                    {
+                        subparts_row = $("#subparts_row_T1");
+                        maxMarks_row = $("#maxMarks_row_T1");
+                        table_body_elem = $("#mark_table_body_T1");
+                    }
+                    else if(type_question=='t2')
+                    {
+                        subparts_row = $("#subparts_row_T2");
+                        maxMarks_row = $("#maxMarks_row_T2");
+                        table_body_elem = $("#mark_table_body_T2");
+                    }
+                    else if(type_question=='t3')
+                    {                    
+                        subparts_row = $("#subparts_row_T3");
+                        maxMarks_row = $("#maxMarks_row_T3");
+                        table_body_elem = $("#mark_table_body_T3");
+                    }
+                    else if(type_question=='e1')
+                    {
+                        subparts_row = $("#subparts_row_E1");
+                        maxMarks_row = $("#maxMarks_row_E1");
+                        table_body_elem = $("#mark_table_body_E1");
+                    }
+                    else if(type_question=='e2')
+                    {
+                        subparts_row = $("#subparts_row_E2");
+                        maxMarks_row = $("#maxMarks_row_E2");
+                        table_body_elem = $("#mark_table_body_E2");
+                    }
+                    subparts_row.append(table_subparts_body);
+                    maxMarks_row.append(table_maxMarks_body);
+                    var table_body = ""; 
+                    for(var i in data.students)
+                    {
+                        table_body += "<tr><td>" + data.students[i] + "</td><td>"+country_code_global+"_"+i.toString()+"</td><td></td>";
+                        for(var j in data.subparts)
+                        {
+                            table_body += '<td><input type = "text" class = "form-control" name = "leaderMarks" /></td>';
+                        }
+                        table_body += "</tr>";
+                    }
+                    table_body_elem.append(table_body);
+                    var i = 0;
+                    if(data.leaderMarks.length!=0)
+                    {
+                        table_body_elem.find("input[name=leaderMarks]").each(function(){
+                                     $(this).val(data.leaderMarks[i]);
+                                     i++;
+                                });
+                    }
+                });
+            }
+
+            socket.on('country-data',function(country)
+            {
+                var mt_head = document.getElementById("message-board-head");
+                mt_head.innerHTML = '';
+                var row = mt_head.insertRow(0);
+                var cell = row.insertCell(0);
+                cell.innerHTML = '<img style="width:40px;height:20px""alt="country image" src= "/media/flags/' + country.country_name + '.png"/>'; 
+                //ENTER COUNTRY IMAGE HERE
+                var cell = row.insertCell(1);
+                cell.innerHTML = country.country_code; 
+                country_code_global = country.country_code;
+
+                var row = mt_head.insertRow(1);
+                var cell = row.insertCell(0);
+                var cell = row.insertCell(1);
+                cell.innerHTML = "Message Table"; 
+
+                send_sheetEditable('t1');
+                send_sheetEditable('t2');
+                send_sheetEditable('t3');
+                send_sheetEditable('e1');
+                send_sheetEditable('e2');
+            });
+
+            //MESSAGE BOARD SIGNAL			
+            //show the message on board
+            socket.on("message-sent",function(message_table)
+            {
+                $("#message-board-body").html('');
+                for(var i in message_table)
+                {
+                    $("#message-board-body").append("<tr><td>" + message_table[i].message + "</td></tr>");
+                }
+            });
+
+            //FEEDBACK ENABLE
+            socket.on('fbEnable',function(q){
+                if(q=='t1')
+                    $("#fbHead").text("Feedback for T-1");
+                if(q=='t2')
+                    $("#fbHead").text("Feedback for T-2");
+                if(q=='t3')
+                    $("#fbHead").text("Feedback for T-3");
+                if(q=='e1')
+                    $("#fbHead").text("Feedback for E-1");
+                if(q=='e2')
+                    $("#fbHead").text("Feedback for E-2");
+            });            
+        </script>
+	   
+	</body>
+</html>

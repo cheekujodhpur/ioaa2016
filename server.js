@@ -283,6 +283,22 @@ app.get('/', function (req, res)
                 {
                     res.sendFile(__dirname + '/pr/index.html');
                 }
+                else if(type == 4)
+                {
+                    res.sendFile(__dirname + '/guest/index.html');
+                }
+                else if(type == 5)
+                {
+                    res.sendFile(__dirname + '/exec/index.html');
+                }
+                else if(type == 6)
+                {
+                    res.sendFile(__dirname + '/disp/index.html');
+                }
+                else if(type == 7)
+                {
+                    res.sendFile(__dirname + '/god/index.html');
+                }
                 else
                 {
                     res.sendFile('/chpass.html');
@@ -2898,7 +2914,6 @@ app.use("/uploads/Romania_Guest/",express.static(__dirname + "/uploads/Romania_G
 app.use("/uploads/Russia_Guest/",express.static(__dirname + "/uploads/Russia_Guest/"));console.log("File download enabled for /uploads/Russia_Guest/");
 app.use("/uploads/Serbia_Guest/",express.static(__dirname + "/uploads/Serbia_Guest/"));console.log("File download enabled for /uploads/Serbia_Guest/");
 app.use("/uploads/Bangladesh_Guest/",express.static(__dirname + "/uploads/Bangladesh_Guest/"));console.log("File download enabled for /uploads/Bangladesh_Guest/");
-app.use("/uploads/Jordan/",express.static(__dirname + "/uploads/Jordan/"));console.log("File download enabled for /uploads/Jordan/");
 app.use("/uploads/President/",express.static(__dirname + "/uploads/President/"));console.log("File download enabled for /uploads/President/");
 app.use("/uploads/Secretary/",express.static(__dirname + "/uploads/Secretary/"));console.log("File download enabled for /uploads/Secretary/");
 app.use("/uploads/Vahia/",express.static(__dirname + "/uploads/Vahia/"));console.log("File download enabled for /uploads/Vahia/");
@@ -2911,4 +2926,6 @@ app.use("/uploads/sandesh/",express.static(__dirname + "/uploads/sandesh/"));con
 app.use("/uploads/ayush/",express.static(__dirname + "/uploads/ayush/"));console.log("File download enabled for /uploads/ayush/");
 app.use("/uploads/aloo/",express.static(__dirname + "/uploads/aloo/"));console.log("File download enabled for /uploads/aloo/");
 app.use("/uploads/sharad/",express.static(__dirname + "/uploads/sharad/"));console.log("File download enabled for /uploads/sharad/");
+app.use("/uploads/groot/",express.static(__dirname + "/uploads/groot/"));console.log("File download enabled for /uploads/groot/");
+app.use("/uploads/display/",express.static(__dirname + "/uploads/display/"));console.log("File download enabled for /uploads/display/");
 app.use("/downloads/",express.static(__dirname + "/downloads/"));console.log("File download enabled for /downloads/");

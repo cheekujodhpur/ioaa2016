@@ -48,7 +48,6 @@
                         <li role = "presentation" class = "active"><a href = "#home" aria-controls="home" role="tab" data-toggle="tab" onclick = 'send_list_dir("uploads");send_list_dir("downloads");'>Home</a></li>
                         <li id = "cvoteb" role = "presentation" style = "display:none;"><a href = "#cvote" aria-controls="cvote" role="tab" data-toggle="tab">Cast Vote</a></li>
                         <li id = "rvoteb" role = "presentation" style = "display:none;"><a href = "#rvote" aria-controls="rvote" role="tab" data-toggle="tab">Results</a></li>
-                        <li id = "fbb" role = "presentation" style = "display:none;"><a href = "#fb" aria-controls="fb" role="tab" data-toggle="tab">Feedback</a></li>
 					    <li id = "fbb_all" role = "presentation"><a href = "#fb_all" aria-controls="fb_all" role="tab" data-toggle="tab">All Feedback</a></li>
                     </ul>
             </div>
@@ -59,102 +58,6 @@
                     <table class ="table table-stripped" style="table-layout:fixed;">
                         <col style="width:50%"> 
                         <col style="width:50%"> 
-			<thead>
-            
-            <!--            
-                <tr>
-                    <th>Table of Constants Upload</th>
-                    <th>Theory</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td id = "TOC_form">
-                        <form id        =  "upload_form"
-                            enctype   =  "multipart/form-data"
-                            action    =  "/uploadedTOC"
-                            method    =  "post"
-                        >
-                        <div style="position:relative;">
-                                    <a class='btn btn-default' href='javascript:;'>
-                                        Choose File...
-                                        <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' id = "file_upload_TOC" name="user_file" size="40"  onchange='$("#upload-file-info_TOC").html($(this).val().replace("C:\\fakepath\\","")) ;'>
-                                    </a>
-                                    &nbsp;
-                                   <span class='label label-info' id="upload-file-info_TOC"></span>
-                         </div>
-                        <input class = "btn btn-default" type="submit" value="Upload File" name="submit" onclick = 'return emptyfile_check_TOC();'/>
-                        </form>
-                     </td>
-                    <td id = "T_form">
-                        <form id        =  "upload_form"
-                            enctype   =  "multipart/form-data"
-                            action    =  "/uploadedT"
-                            method    =  "post"
-                        >
-                        <div style="position:relative;">
-                                    <a class='btn btn-default' href='javascript:;'>
-                                        Choose File...
-                                        <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' id = "file_upload_T" name="user_file" size="40"  onchange='$("#upload-file-info_T").html($(this).val().replace("C:\\fakepath\\","")) ;'>
-                                    </a>
-                                    &nbsp;
-                                   <span class='label label-info' id="upload-file-info_T"></span>
-                         </div>
-                        <input class = "btn btn-default" type="submit" value="Upload File" name="submit" onclick = 'return emptyfile_check_T();'/>
-                        </form>
-                     </td>
-                </tr>
-            </tbody>
-            --> 
-            
-            <!--
-			<thead>
-                <tr>
-                    <th>Table of Constants Upload</th>
-                    <th>Data</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td id = "TOC_form">
-                        <form id        =  "upload_form"
-                            enctype   =  "multipart/form-data"
-                            action    =  "/uploadedTOC"
-                            method    =  "post"
-                        >
-                        <div style="position:relative;">
-                                    <a class='btn btn-default' href='javascript:;'>
-                                        Choose File...
-                                        <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' id = "file_upload_TOC" name="user_file" size="40"  onchange='$("#upload-file-info_TOC").html($(this).val().replace("C:\\fakepath\\","")) ;'>
-                                    </a>
-                                    &nbsp;
-                                   <span class='label label-info' id="upload-file-info_TOC"></span>
-                         </div>
-                        <input class = "btn btn-default" type="submit" value="Upload File" name="submit" onclick = 'return emptyfile_check_TOC();'/>
-                        </form>
-                     </td>
-                    <td id = "D_form">
-                        <form id        =  "upload_form"
-                            enctype   =  "multipart/form-data"
-                            action    =  "/uploadedD"
-                            method    =  "post"
-                        >
-                        <div style="position:relative;">
-                                    <a class='btn btn-default' href='javascript:;'>
-                                        Choose File...
-                                        <input type="file" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' id = "file_upload_D" name="user_file" size="40"  onchange='$("#upload-file-info_D").html($(this).val().replace("C:\\fakepath\\","")) ;'>
-                                    </a>
-                                    &nbsp;
-                                   <span class='label label-info' id="upload-file-info_D"></span>
-                         </div>
-                        <input class = "btn btn-default" type="submit" value="Upload File" name="submit" onclick = 'return emptyfile_check_D();'/>
-                        </form>
-                     </td>
-                </tr>
-            </tbody>
-            -->
-
-            <!-- Observation and Data Meeting -->
             <thead>
                 <tr>
                     <th>Planetarium (OP) </th>
@@ -324,7 +227,6 @@
                  </tr>
             </tbody>
         </table>
-
                     <table id='download_table' class='table table-bordered table-hover'>
                         <thead>
                             <tr><th>Downloads</th></tr>
@@ -386,23 +288,6 @@
                         </table>
                     </div>    
                 </div>
-
-                <div role="tabpanel" class="tab-pane" id = "fb_all"> 
-                <div id = "fb_data">
-                    <table style = "table-layout:fixed;" class = "table table-bordered table-hover tablesorter" id = "fb_data_table_all">
-                        <thead>
-                        <tr>
-                            <th width = "200px" style="text-align:center"><div class="btn btn-info">Time <div class="glyphicon glyphicon-sort-by-attributes"</div></div></th>
-                            <th width = "110px" style="text-align:center"><div class="btn btn-info">Country <div class="glyphicon glyphicon-sort-by-attributes"</div></div></th>
-                            <th width = "100px" style="text-align:center"><div class="btn btn-info">QID <div class="glyphicon glyphicon-sort-by-attributes"</div></div></th>
-                            <th width = "400px"style="text-align:center"><div class="btn btn-info">Content <div class="glyphicon glyphicon-sort-by-attributes"</div></div></th>
-                        </tr>
-                        </thead>
-                        <tbody id = "fb_data_table_body_all">
-                        </tbody>
-                    </table>
-                </div>    
-            </div>
             </div>
         </div>
         
@@ -431,52 +316,11 @@
         </footer>   	
         
         <!-- jQuery -->
-		<script src = "/static/js/jquery.min.js"></script>
-		<script src = "/static/js/bootstrap.min.js"></script>
-        <script src = "/static/js/knockout-2.2.0.js"></script>
-        <script src = "/static/js/jquery.tablesorter.js"></script>
-		<script src = "/static/js/Chart.min.js"></script>
-		<script src = "/socket.io/socket.io.js"></script>
+        <script src = "/static/js/jquery.min.js"></script>
+        <script src = "/static/js/Chart.min.js"></script>
+        <script src = "/static/js/bootstrap.min.js"></script>
+        <script src = "/socket.io/socket.io.js"></script>
         <script>
-            /*Theory Meeting
-            //gets the element by its id
-            var TOC_file = document.getElementById('file_upload_TOC');
-            //binds to onchange event of the input field
-            TOC_file.addEventListener('change', function() 
-            {
-                //this.files[0].size gets the size of your file.
-                if(this.files[0].size > 104857600)
-                {
-                    alert("File limit (100 MB) exceeded.");
-                    window.location = '/';
-                }
-                
-            });
-            var T_file = document.getElementById('file_upload_T');
-            //binds to onchange event of the input field
-            T_file.addEventListener('change', function() 
-            {
-                //this.files[0].size gets the size of your file.
-                if(this.files[0].size > 104857600)
-                {
-                    alert("File limit (100 MB) exceeded.");
-                    window.location = '/';
-                }
-                
-            });
-            var D_file = document.getElementById('file_upload_D');
-            //binds to onchange event of the input field
-            D_file.addEventListener('change', function() 
-            {
-                //this.files[0].size gets the size of your file.
-                if(this.files[0].size > 104857600)
-                {
-                    alert("File limit (100 MB) exceeded.");
-                    window.location = '/';
-                }
-                
-            });
-            */
             var OP_file = document.getElementById('file_upload_OP');
             //binds to onchange event of the input field
             OP_file.addEventListener('change', function() 
@@ -563,6 +407,7 @@
             });
 
 
+
             //to protect from unload
             window.onbeforeunload = function() 
             {
@@ -574,9 +419,6 @@
             var socket = io();
             var fb_current = '';
             var num_of_leaders = '';
-            var current_sort_order = [];     
-
-
             socket.on('end-ack',function()
             {
                 window.location = '/auth.html';
@@ -600,10 +442,6 @@
             $(document).ready(function()
             {
   
-                  $("#fb_data_table_all").tablesorter();
-                  $("#fb_data_table_all").on("sortEnd",function(event){
-                      current_sort_order = event.target.config.sortList;
-                      });
                 socket.emit("list-dir","/uploads");socket.emit("list-dir","/downloads");
                 var uptimer = setInterval(function()
                 {
@@ -656,6 +494,7 @@
                         }
                         });
             }
+
             function request_fb_all(current)
             {
                 var uData = {};
@@ -794,7 +633,27 @@
 
                         });
             }
-            
+            socket.on('fbEnable',function(q){
+                fb_current = q;
+                reset_fb_timer();
+                $("#fbb_all").show();
+            });
+
+            function reset_fb_timer()
+            {
+                clearInterval(fbtimer);
+                
+                fbtimer = setInterval(function(){
+                    request_fb_all(fb_current);    
+                },10000);
+                request_fb_all(fb_current);
+            }
+
+            //FEEDBACK DISABLE
+            socket.on('fbDisable',function(){
+                $("#nemo a:first").tab('show');
+                $("#fbb_all").hide();
+            });
             socket.on('country-data',function(country)
             {
                 var mt_head = document.getElementById("country_data_table");
@@ -814,70 +673,42 @@
             {
                 $(document).on("keydown",disableF5);
                 var option,Option;
-                if(num_of_leaders==2)
-                    var optiontext = '<div id="divider-container"><div id = "left-opts" class = "left"><h5>Leader 1</h5></div><div class = "left" id = "right-opts" style = "position:relative"><h5>Leader 2</h5></div><div class = "clear"></div></div>';
-                else
-                    var optiontext = '<div id="divider-container"><div id = "left-opts" class = "left"><h5>Leader 1</h5></div><div class = "clear"></div></div>';
-                $("#vote-opts").html(optiontext);
-                for(var i = 1;i<=options.length;i++){
-                    if(i!=options.length)
-                        option = '<div class = "radio"><label><input type="radio" name = "vote-options" id = "opt'+i+'" value = "opt'+i+'" />'+options[i-1]+'</label></div>';
-                    else
-                        option = '<div class = "radio"><label><input type="radio" name = "vote-options" id = "opt'+i+'" value = "opt'+i+'" checked="checked" />'+options[i-1]+'</label></div>';
+                $("#cast-vote-opts").html('<div id="divider-container"><div id = "left-opts" class = "left"><ul id = "left-opts-list" style = "padding:0px;"></ul></div><div class = "left" id = "right-opts" style = "position:relative;width:48%"><h5></h5></div><div class = "clear"></div></div>');
+                for(var i = 1;i<=options.length;i++)
+                {
+                    option = '<li>'+options[i-1]+'</li>';
                     Option = $(option);
-                    $("#left-opts").append(Option);
-                }
-                if(num_of_leaders==2)
-                {
-                    for(var i = 1;i<=options.length;i++){
-                        if(i!=options.length)
-                            option = '<div class = "radio"><label><input type="radio" name = "vote-options2" id = "opt'+i+'" value = "opt'+i+'" />'+options[i-1]+'</label></div>';
-                        else
-                            option = '<div class = "radio"><label><input type="radio" name = "vote-options2" id = "opt'+i+'" value = "opt'+i+'" checked="checked" />'+options[i-1]+'</label></div>';
-                        Option = $(option);
-                        $("#right-opts").append(Option);
-                    }
-                }
-                var dummy_submit = '<button id = "dummy_submit" class = "btn btn-default">Submit</button>';
-                var Dummy_submit = $(dummy_submit);
-                $("#left-opts").append(Dummy_submit);
-                if(num_of_leaders==2)
-                {
-                    var dummy_submit = '<button id = "dummy_submit2" class = "btn btn-default">Submit</button>';
-                    var Dummy_submit = $(dummy_submit);
-                    $("#right-opts").append(Dummy_submit);
-                }
-                //add click event handler to dummy_submit
-                $("#dummy_submit").click(function(e){
-                    e.preventDefault();
-                    $('input[name=vote-options]').attr('disabled',true);
-                });
-                if(num_of_leaders==2)
-                {
-                    $("#dummy_submit2").click(function(e){
-                        e.preventDefault();
-                        $('input[name=vote-options2]').attr('disabled',true);
-                    });
-                }
-                var Body = $('<font style="font-size:18px;">'+body+'</font>');
-                $("#vote-body").append(Body);
-                $("#cvoteb").show();
-                $("#nemo a:eq(-3)").tab('show');
+                    $("#left-opts-list").append(Option);
+                }   
             
+                //var dummy_submit = '<button id = "dummy_submit" class = "btn btn-default">Submit</button>';
+                //var Dummy_submit = $(dummy_submit);
+                //$("#left-opts").append(Dummy_submit);
+                ////add click event handler to dummy_submit
+                //$("#dummy_submit").click(function(e)
+                //{
+                //    e.preventDefault();
+                //    $('input[name=vote-options]').attr('disabled',true);
+                //});
+                //
+                var Body = $('<font style="font-size:18px;">'+body+'</font>');
+                $("#cast-vote-body").append(Body);
+                //$("#cvoteb").show();
+                $("#nemo a:eq(-4)").tab('show');
+                clearInterval(timer);
+		var startDate = new Date();
+		var startTime = startDate.getTime()/1000;
+                var timer = setInterval(function(){
+		    var nowDate = new Date();
+		    var nowTime = nowDate.getTime()/1000;
+		    var seconds = parseInt(time-nowTime+startTime);
+                    $("#timer").parent().show();
+                    $("#timer").html(seconds);
+                    if(seconds<=0) {
+                    //logVote(id);
                     clearInterval(timer);
-                    var startDate = new Date();
-                    var startTime = startDate.getTime()/1000;
-                    var timer = setInterval(function(){
-                var nowDate = new Date();
-                var nowTime = nowDate.getTime()/1000;
-                var seconds = parseInt(time-nowTime+startTime);
-                        $("#timer").parent().show();
-                        $("#timer").html(seconds);
-                        if(seconds<=0) {
-                        logVote(id);
-                        clearInterval(timer);
-                        }	
-                    },1000);
+                    }	
+                },1000);
             });
             
             //results came
@@ -957,85 +788,6 @@
                     $("#cvoteb").hide();
                     $("#nemo a:eq(0)").tab('show');
             });
-
-            //FEEDBACK ENABLE
-            socket.on('fbEnable',function(q){
-                if(q=='t1')
-                {
-                    $("#fbHead").text("Feedback for Q 1-5");
-                    get_subparts('t1');
-                }
-                if(q=='t2')
-                {
-                    $("#fbHead").text("Feedback for Q 6-10");
-                    get_subparts('t2');
-                }
-                if(q=='t3')
-                {
-                    $("#fbHead").text("Feedback for Q 10-15");
-                    get_subparts('t3');
-                }
-                if(q=='d')
-                {
-                    $("#fbHead").text("Feedback for Data");
-                    get_subparts('d');
-                }   
-                if(q=='op')
-                {
-                    $("#fbHead").text("Feedback for Planetarium");
-                    get_subparts('op');
-                }   
-                if(q=='om')
-                {
-                    $("#fbHead").text("Feedback for Sky Map");
-                    get_subparts('om');
-                }   
-                if(q=='ot')
-                {
-                    $("#fbHead").text("Feedback for Telescope");
-                    get_subparts('ot');
-                }   
-                if(q=='g')
-                {
-                    $("#fbHead").text("Feedback for Group");
-                    get_subparts('g');
-                }   
-
-                fb_current = q;
-                request_fb(fb_current);
-                reset_fb_timer();
-                $("#fbb").show();
-                $("#fbb_all").show();
-            });
-
-            function reset_fb_timer()
-            {
-                clearInterval(fbtimer);
-                
-                fbtimer = setInterval(function(){
-                    request_fb_all(fb_current);    
-                },10000);
-                request_fb_all(fb_current);
-            }
-
-            //FEEDBACK DISABLE
-            socket.on('fbDisable',function(){
-                $("#nemo a:first").tab('show');
-                $("#fbb").hide();
-                $("#fbb_all").hide();
-            });
-
-            $("#fb_submit").click(function(e){
-                e.preventDefault();
-                var content = $("#comment").val();
-                var id = $("#fbMenu").val();
-                
-                $("#comment").val('');
-                var now = new Date();
-                //alert(now.toString());
-                socket.emit('fbContent',id,fb_current,content,now.toTimeString());
-                request_fb(fb_current);
-            });
             
             //FUNCTIONS
             function logVote(id)
@@ -1046,62 +798,6 @@
                 $('input[name=vote-options]').attr('disabled',true);
                 $('input[name=vote-options2]').attr('disabled',true);
                 $("#timer").parent().hide();
-            }
-            function emptyfile_check_TOC()
-            {
-                var file = document.getElementById('file_upload_TOC');
-                if(file.value === null || file.value === "")
-                {
-                    alert("It is not possible to upload an empty file.");
-                    return false;
-                }
-                else
-                {
-                    alert("File uploaded successfully.");
-                    return true;
-                }
-            }
-            function emptyfile_check_T()
-            {
-                var file = document.getElementById('file_upload_T');
-                if(file.value === null || file.value === "")
-                {
-                    alert("It is not possible to upload an empty file.");
-                    return false;
-                }
-                else
-                {
-                    alert("File uploaded successfully.");
-                    return true;
-                }
-            }
-            function emptyfile_check_TOC()
-            {
-                var file = document.getElementById('file_upload_TOC');
-                if(file.value === null || file.value === "")
-                {
-                    alert("It is not possible to upload an empty file.");
-                    return false;
-                }
-                else
-                {
-                    alert("File uploaded successfully.");
-                    return true;
-                }
-            }
-            function emptyfile_check_D()
-            {
-                var file = document.getElementById('file_upload_D');
-                if(file.value === null || file.value === "")
-                {
-                    alert("It is not possible to upload an empty file.");
-                    return false;
-                }
-                else
-                {
-                    alert("File uploaded successfully.");
-                    return true;
-                }
             }
             function emptyfile_check_OP()
             {
