@@ -4,7 +4,7 @@
 		<meta charset = "utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>IPhO 2015 - Mumbai, India</title>
+		<title>IOAA 2016 - Bhubaneshwar, India</title>
 
 		<!--Bootstrap-->
 		<link href = "/static/css/bootstrap.min.css" rel = "stylesheet" />
@@ -19,8 +19,8 @@
         <div id = "sp-header-wrapper" class = "navbar navbar-defaul navbar-fixed-top">
 			<div class = "container-fluid">
                 <div class = "navbar-header">
-                    <a class="navbar-brand" href = "http://www.ipho2015.in">
-                        <img alt="ipho-logo" src = "/media/ipho-logo1.png" />
+                    <a class="navbar-brand" href = "http://www.ioaa2016.in">
+                        <img alt="ipho-logo" src = "/media/ioaa-logo.png" />
                     </a>
                 </div>
 			</div>
@@ -48,7 +48,7 @@
                         <li role = "presentation" class = "active"><a href = "#home" aria-controls="home" role="tab" data-toggle="tab" onclick = 'send_list_dir("uploads");send_list_dir("downloads");'>Home</a></li>
                         <li id = "cvoteb" role = "presentation" style = "display:none;"><a href = "#cvote" aria-controls="cvote" role="tab" data-toggle="tab">Cast Vote</a></li>
                         <li id = "rvoteb" role = "presentation" style = "display:none;"><a href = "#rvote" aria-controls="rvote" role="tab" data-toggle="tab">Results</a></li>
-                        <li id = "fbb" role = "presentation" style = "display:none;"><a href = "#fb" aria-controls="fb" role="tab" data-toggle="tab">Feedback</a></li>
+					    <li id = "fbb_all" role = "presentation"><a href = "#fb_all" aria-controls="fb_all" role="tab" data-toggle="tab">All Feedback</a></li>
                     </ul>
             </div>
             
@@ -76,38 +76,23 @@
                 
                 <div role="tabpanel" class="tab-pane" id = "rvote"></div>
                 
-                <div role="tabpanel" class="tab-pane" id = "fb">
-                    <h4 id = "fbHead">Feedback for </h4>
-                    <form id = "form-feedback">
-                        <div class="form-group" id = "fb-dropdown">
-                           <label for = "fbMenu">Question:</label>
-                           <select class = "form-control" id = "fbMenu">
-                           </select>    
-                        </div>
-                        <div class = "form-group" id = "fb-content">
-                            <label for = "comment">Comment:</label>
-                            <textarea class = "form-control" rows = "5" id = "comment"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-default" id = "fb_submit" onclick='alert("Your feedback has been submitted successfully.")'>Submit</button>
-                    </form>
-                    
-                    <div id = "fb_data">
-                        <table style = "table-layout:fixed;" class = "table table-bordered table-hover" id = "fb_data_table">
-                            <col style="width:30%"> 
-                            <col style="width:10%"> 
-                            <col style="width:60%"> 
-                            <thead>
-                            <tr>
-                                <th style="text-align:center"><div class="btn btn-info">Time</div></th>
-                                <th style="text-align:center"><div class="btn btn-info">QID</div></th>
-                                <th style="text-align:center"><div class="btn btn-info">Content</div></th>
-                            </tr>
-                            </thead>
-                            <tbody id = "fb_data_table_body">
-                            </tbody>
-                        </table>
-                    </div>    
-                </div>
+                <div role="tabpanel" class="tab-pane" id = "fb_all"> 
+                <div id = "fb_data">
+                    <table style = "table-layout:fixed;" class = "table table-bordered table-hover tablesorter" id = "fb_data_table_all">
+                        <thead>
+                        <tr>
+                            <th width = "200px" style="text-align:center"><div class="btn btn-info">Time <div class="glyphicon glyphicon-sort-by-attributes"</div></div></th>
+                            <th width = "110px" style="text-align:center"><div class="btn btn-info">Country <div class="glyphicon glyphicon-sort-by-attributes"</div></div></th>
+                            <th width = "100px" style="text-align:center"><div class="btn btn-info">QID <div class="glyphicon glyphicon-sort-by-attributes"</div></div></th>
+                            <th width = "400px"style="text-align:center"><div class="btn btn-info">Content <div class="glyphicon glyphicon-sort-by-attributes"</div></div></th>
+                            <th width = "40px" style="text-align:center"><div class="btn btn-info">S</div></th>
+                        </tr>
+                        </thead>
+                        <tbody id = "fb_data_table_body_all">
+                        </tbody>
+                    </table>
+                </div>    
+            </div>
             </div>
         </div>
         
@@ -136,10 +121,12 @@
         </footer>   	
         
         <!-- jQuery -->
-        <script src = "/static/js/jquery.min.js"></script>
-        <script src = "/static/js/Chart.min.js"></script>
-        <script src = "/static/js/bootstrap.min.js"></script>
-        <script src = "/socket.io/socket.io.js"></script>
+		<script src = "/static/js/jquery.min.js"></script>
+		<script src = "/static/js/bootstrap.min.js"></script>
+        <script src = "/static/js/knockout-2.2.0.js"></script>
+        <script src = "/static/js/jquery.tablesorter.js"></script>
+		<script src = "/static/js/Chart.min.js"></script>
+		<script src = "/socket.io/socket.io.js"></script>
         <script>
             //to protect from unload
             window.onbeforeunload = function() 
@@ -152,6 +139,7 @@
             var socket = io();
             var fb_current = '';
             var num_of_leaders = '';
+            var current_sort_order = [];     
             socket.on('end-ack',function()
             {
                 window.location = '/auth.html';
@@ -181,6 +169,10 @@
             $(document).ready(function()
             {
   
+                  $("#fb_data_table_all").tablesorter();
+                  $("#fb_data_table_all").on("sortEnd",function(event){
+                      current_sort_order = event.target.config.sortList;
+                      });
                 socket.emit("list-dir","/uploads");socket.emit("list-dir","/downloads");
                 var uptimer = setInterval(function()
                 {
@@ -197,10 +189,48 @@
                 {
                     window.location = '/chpass.html';
                 });
+                fbtimer = setInterval(function(){
+                    request_fb_all(fb_current);    
+                },10000);
+                fb_current = '';
+                request_fb_all(fb_current);
 
             });
          
             
+            function request_fb_all(current)
+            {
+                var uData = {};
+                uData['current'] = current;
+                $.ajax({
+                        method:"POST",
+                        url:'/request_fb',
+                        data:uData,
+                        dataType:"json"
+                        })
+                .done(function(data){
+                       var feeds = data['feeds'];
+                 
+                        $("#fb_data_table_body_all").html('');
+                        for(var feed in feeds)
+                        {
+                            var ll = '';
+                            for(var ff in feeds[feed].content) ll = ll + feeds[feed].content[ff] + '<br />';
+                            if(feeds[feed].done == false)
+                            {
+                            var field = '<tr id = "fb_row"><td>'+feeds[feed].time + '</td><td>' + feeds[feed].country_code+'</td><td>'+feeds[feed].qid+'</td><td>'+ll+'</td><td style="margin-left:10px;" class="btn btn-danger glyphicon glyphicon-remove"></td></tr>';
+                            } 
+                            else 
+                            {
+                            var field = '<tr id = "fb_row"><td>'+feeds[feed].time + '</td><td>' + feeds[feed].country_code+'</td><td>'+feeds[feed].qid+'</td><td>'+ll+'</td><td style="margin-left:10px;" class="btn btn-success glyphicon glyphicon-ok"><span style = "font-size:0">1</span></td></tr>';
+                            } 
+                            var Field = $(field);
+                            $("#fb_data_table_body_all").append(Field);
+                        }
+                        $("#fb_data_table_all").trigger('update');
+                        setTimeout(function(){ $("#fb_data_table_all").trigger( 'sorton', [ current_sort_order ] ) },10);
+                        });
+            }
             function request_fb(current)
             {
                 var uData = {};
@@ -452,42 +482,25 @@
 
             //FEEDBACK ENABLE
             socket.on('fbEnable',function(q){
-                if(q=='t1')
-                {
-                    $("#fbHead").text("Feedback for T-1");
-                    get_subparts('t1');
-                }
-                if(q=='t2')
-                {
-                    $("#fbHead").text("Feedback for T-2");
-                    get_subparts('t2');
-                }
-                if(q=='t3')
-                {
-                    $("#fbHead").text("Feedback for T-3");
-                    get_subparts('t3');
-                }
-                if(q=='e1')
-                {
-                    $("#fbHead").text("Feedback for E-1");
-                    get_subparts('e1');
-                }   
-                if(q=='e2')
-                {
-                    $("#fbHead").text("Feedback for E-2");
-                    get_subparts('e2');
-                }
-                if(fb_current!=q)   
-                {
-                    fb_current = q;
-                    request_fb(fb_current);
-                }
-                $("#fbb").show();
+                fb_current = q;
+                reset_fb_timer();
+                $("#fbb_all").show();
             });
+
+            function reset_fb_timer()
+            {
+                clearInterval(fbtimer);
+                
+                fbtimer = setInterval(function(){
+                    request_fb_all(fb_current);    
+                },10000);
+                request_fb_all(fb_current);
+            }
+
             //FEEDBACK DISABLE
             socket.on('fbDisable',function(){
                 $("#nemo a:first").tab('show');
-                $("#fbb").hide();
+                $("#fbb_all").hide();
             });
 
             $("#fb_submit").click(function(e){

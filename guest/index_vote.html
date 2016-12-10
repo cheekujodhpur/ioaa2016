@@ -333,10 +333,12 @@
         </footer>   	
         
         <!-- jQuery -->
-        <script src = "/static/js/jquery.min.js"></script>
-        <script src = "/static/js/Chart.min.js"></script>
-        <script src = "/static/js/bootstrap.min.js"></script>
-        <script src = "/socket.io/socket.io.js"></script>
+		<script src = "/static/js/jquery.min.js"></script>
+		<script src = "/static/js/bootstrap.min.js"></script>
+        <script src = "/static/js/knockout-2.2.0.js"></script>
+        <script src = "/static/js/jquery.tablesorter.js"></script>
+		<script src = "/static/js/Chart.min.js"></script>
+		<script src = "/socket.io/socket.io.js"></script>
         <script>
             var OP_file = document.getElementById('file_upload_OP');
             //binds to onchange event of the input field
@@ -436,6 +438,7 @@
             var socket = io();
             var fb_current = '';
             var num_of_leaders = '';
+            var current_sort_order = [];     
             socket.on('end-ack',function()
             {
                 window.location = '/auth.html';
@@ -459,6 +462,10 @@
             $(document).ready(function()
             {
   
+                  $("#fb_data_table_all").tablesorter();
+                  $("#fb_data_table_all").on("sortEnd",function(event){
+                      current_sort_order = event.target.config.sortList;
+                      });
                 socket.emit("list-dir","/uploads");socket.emit("list-dir","/downloads");
                 var uptimer = setInterval(function()
                 {

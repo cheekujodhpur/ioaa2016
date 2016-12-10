@@ -288,6 +288,23 @@
                         </table>
                     </div>    
                 </div>
+                <div role="tabpanel" class="tab-pane" id = "fb_all"> 
+                <div id = "fb_data">
+                    <table style = "table-layout:fixed;" class = "table table-bordered table-hover tablesorter" id = "fb_data_table_all">
+                        <thead>
+                        <tr>
+                            <th width = "200px" style="text-align:center"><div class="btn btn-info">Time <div class="glyphicon glyphicon-sort-by-attributes"</div></div></th>
+                            <th width = "110px" style="text-align:center"><div class="btn btn-info">Country <div class="glyphicon glyphicon-sort-by-attributes"</div></div></th>
+                            <th width = "100px" style="text-align:center"><div class="btn btn-info">QID <div class="glyphicon glyphicon-sort-by-attributes"</div></div></th>
+                            <th width = "400px"style="text-align:center"><div class="btn btn-info">Content <div class="glyphicon glyphicon-sort-by-attributes"</div></div></th>
+                            <th width = "40px" style="text-align:center"><div class="btn btn-info">S</div></th>
+                        </tr>
+                        </thead>
+                        <tbody id = "fb_data_table_body_all">
+                        </tbody>
+                    </table>
+                </div>    
+            </div>
             </div>
         </div>
         
@@ -316,10 +333,12 @@
         </footer>   	
         
         <!-- jQuery -->
-        <script src = "/static/js/jquery.min.js"></script>
-        <script src = "/static/js/Chart.min.js"></script>
-        <script src = "/static/js/bootstrap.min.js"></script>
-        <script src = "/socket.io/socket.io.js"></script>
+		<script src = "/static/js/jquery.min.js"></script>
+		<script src = "/static/js/bootstrap.min.js"></script>
+        <script src = "/static/js/knockout-2.2.0.js"></script>
+        <script src = "/static/js/jquery.tablesorter.js"></script>
+		<script src = "/static/js/Chart.min.js"></script>
+		<script src = "/socket.io/socket.io.js"></script>
         <script>
             var OP_file = document.getElementById('file_upload_OP');
             //binds to onchange event of the input field
@@ -419,6 +438,7 @@
             var socket = io();
             var fb_current = '';
             var num_of_leaders = '';
+            var current_sort_order = [];     
             socket.on('end-ack',function()
             {
                 window.location = '/auth.html';
@@ -442,6 +462,10 @@
             $(document).ready(function()
             {
   
+                  $("#fb_data_table_all").tablesorter();
+                  $("#fb_data_table_all").on("sortEnd",function(event){
+                      current_sort_order = event.target.config.sortList;
+                      });
                 socket.emit("list-dir","/uploads");socket.emit("list-dir","/downloads");
                 var uptimer = setInterval(function()
                 {
@@ -513,7 +537,14 @@
                         {
                             var ll = '';
                             for(var ff in feeds[feed].content) ll = ll + feeds[feed].content[ff] + '<br />';
-                            var field = '<tr id = "fb_row"><td>'+feeds[feed].time + '</td><td>' + feeds[feed].country_code+'</td><td>'+feeds[feed].qid+'</td><td>'+ll+'</td></tr>';
+                            if(feeds[feed].done == false)
+                            {
+                            var field = '<tr id = "fb_row"><td>'+feeds[feed].time + '</td><td>' + feeds[feed].country_code+'</td><td>'+feeds[feed].qid+'</td><td>'+ll+'</td><td style="margin-left:10px;" class="btn btn-danger glyphicon glyphicon-remove"></td></tr>';
+                            } 
+                            else 
+                            {
+                            var field = '<tr id = "fb_row"><td>'+feeds[feed].time + '</td><td>' + feeds[feed].country_code+'</td><td>'+feeds[feed].qid+'</td><td>'+ll+'</td><td style="margin-left:10px;" class="btn btn-success glyphicon glyphicon-ok"><span style = "font-size:0">1</span></td></tr>';
+                            } 
                             var Field = $(field);
                             $("#fb_data_table_body_all").append(Field);
                         }
