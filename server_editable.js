@@ -1758,15 +1758,19 @@ app.post('/request_fb_leader',function(req,res)
 			    return 0;
 		    }
             console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip.toString());
-		    var fbs = db.collection('fbs');
-		    fbs.find({qno:current,"ip":ip}).toArray(function(err,feeds)
-		    {
-                var result = {};
-                result['feeds'] = feeds;
-                res.json(result);
-                console.log("Response to '/request_fb' sent in response to request from " + ip.toString());  
-			    db.close();
-		    });
+			var fbs = db.collection('fbs');
+            var users = db.collection('users');
+            users.find({"ip":ip}).toArray(function(err,result){
+                var country_code = result[0].country_code;
+                fbs.find({qno:current,"country_code":country_code}).toArray(function(err,feeds)
+                {
+                    var result = {};
+                    result['feeds'] = feeds;
+                    res.json(result);
+                    console.log("Response to '/request_fb' sent in response to request from " + ip.toString());  
+                    db.close();
+                });
+            });
 		});
     });
 });
