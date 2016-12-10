@@ -62,14 +62,9 @@ do
     fi    
 done < country_code_user.txt 
 
-./add_subparts.sh <data/t_subparts.txt
-./add_subparts.sh <data/t1_subparts.txt
-./add_subparts.sh <data/t2_subparts.txt
-./add_subparts.sh <data/t3_subparts.txt
-./add_subparts.sh <data/d_subparts.txt
 ./add_subparts.sh <data/g_subparts.txt
-./add_subparts.sh <data/o1_subparts.txt
-./add_subparts.sh <data/o2_subparts.txt
-./add_subparts.sh <data/o3_subparts.txt
+./add_subparts.sh <data/op_subparts.txt
+./add_subparts.sh <data/om_subparts.txt
+./add_subparts.sh <data/ot_subparts.txt
 
 echo 'app.use("/downloads/",express.static(__dirname + "/downloads/"));console.log("File download enabled for /downloads/");' >> server.js

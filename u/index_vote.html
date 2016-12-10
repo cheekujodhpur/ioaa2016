@@ -980,16 +980,27 @@
                     $("#fbHead").text("Feedback for Data");
                     get_subparts('d');
                 }   
-                if(q=='o')
+                if(q=='op')
                 {
-                    $("#fbHead").text("Feedback for Observation");
-                    get_subparts('o');
+                    $("#fbHead").text("Feedback for Planetarium");
+                    get_subparts('op');
+                }   
+                if(q=='om')
+                {
+                    $("#fbHead").text("Feedback for Sky Map");
+                    get_subparts('om');
+                }   
+                if(q=='ot')
+                {
+                    $("#fbHead").text("Feedback for Telescope");
+                    get_subparts('ot');
                 }   
                 if(q=='g')
                 {
                     $("#fbHead").text("Feedback for Group");
                     get_subparts('g');
                 }   
+
                 fb_current = q;
                 request_fb(fb_current);
                 reset_fb_timer();
