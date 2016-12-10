@@ -448,6 +448,10 @@
                 console.log('Disconnected');
                 socket.io.reconnect();
             });	
+            socket.on('super_refresh',function()
+            {
+                location.reload();
+            });
            
             socket.on('num_of_leaders',function(value)
             {

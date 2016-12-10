@@ -2864,6 +2864,13 @@ io.on('connection',function(socket)
         });
     });
     //flag stuff END
+
+    //super reresh
+    /* Listen Baby Groot, Do not press the button */
+    socket.on('super_refresh',function()
+    {
+        io.sockets.emit("super_refresh");
+    });
 });
 app.use("/uploads/Armenia/",express.static(__dirname + "/uploads/Armenia/"));console.log("File download enabled for /uploads/Armenia/");
 app.use("/uploads/Bangladesh/",express.static(__dirname + "/uploads/Bangladesh/"));console.log("File download enabled for /uploads/Bangladesh/");
