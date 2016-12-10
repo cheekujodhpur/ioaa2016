@@ -106,14 +106,14 @@
             function sendPrinted(elem)
             {
                 var type = $(elem).attr('data-q');
-                var ip = $(elem).attr('data-ip');
-                socket.emit('flagPrint',$(elem).is(':checked'),type,ip);
+                var cc = $(elem).attr('data-cc');
+                socket.emit('flagPrint',$(elem).is(':checked'),type,cc);
             }
             function sendPacked(elem)
             {
                 var type = $(elem).attr('data-q');
-                var ip = $(elem).attr('data-ip');
-                socket.emit('flagPack',$(elem).is(':checked'),type,ip);
+                var cc = $(elem).attr('data-cc');
+                socket.emit('flagPack',$(elem).is(':checked'),type,cc);
             }
 
             //SOCKET SIGNALS
@@ -167,7 +167,7 @@
                             prcheckstr = 'checked';
                         if(packchecked)
                             pacheckstr = 'checked';
-                        table += '<tbody><tr class="success"><td>OP</td><td class = "prcheck"><input '+prcheckstr+' data-q = "OP" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "OP" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
+                        table += '<tbody><tr class="success"><td>OP</td><td class = "prcheck"><input '+prcheckstr+' data-q = "OP" data-cc = "'+all_uploads[i].country_code+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "OP" data-cc = "'+all_uploads[i].country_code+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
                     }
                     else
                     {    
@@ -183,7 +183,7 @@
                             prcheckstr = 'checked';
                         if(packchecked)
                             pacheckstr = 'checked';
-                        table += '<tbody><tr class="success"><td>OPi</td><td class = "prcheck"><input '+prcheckstr+' data-q = "OPi" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "OPi" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
+                        table += '<tbody><tr class="success"><td>OPi</td><td class = "prcheck"><input '+prcheckstr+' data-q = "OPi" data-cc = "'+all_uploads[i].country_code+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "OPi" data-cc = "'+all_uploads[i].country_code+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
                     }
                     else
                     {    
@@ -200,7 +200,7 @@
                             prcheckstr = 'checked';
                         if(packchecked)
                             pacheckstr = 'checked';
-                        table += '<tbody><tr class="success"><td>OM</td><td class = "prcheck"><input '+prcheckstr+' data-q = "OM" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "OM" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
+                        table += '<tbody><tr class="success"><td>OM</td><td class = "prcheck"><input '+prcheckstr+' data-q = "OM" data-cc = "'+all_uploads[i].country_code+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "OM" data-cc = "'+all_uploads[i].country_code+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
                     }
                     else
                     {    
@@ -216,7 +216,7 @@
                             prcheckstr = 'checked';
                         if(packchecked)
                             pacheckstr = 'checked';
-                        table += '<tbody><tr class="success"><td>OMi</td><td class = "prcheck"><input '+prcheckstr+' data-q = "OMi" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "OMi" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
+                        table += '<tbody><tr class="success"><td>OMi</td><td class = "prcheck"><input '+prcheckstr+' data-q = "OMi" data-cc = "'+all_uploads[i].country_code+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "OMi" data-cc = "'+all_uploads[i].country_code+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
                     }
                     else
                     {    
@@ -233,7 +233,7 @@
                             prcheckstr = 'checked';
                         if(packchecked)
                             pacheckstr = 'checked';
-                        table += '<tbody><tr class="success"><td>OT</td><td class = "prcheck"><input '+prcheckstr+' data-q = "OT" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "OT" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
+                        table += '<tbody><tr class="success"><td>OT</td><td class = "prcheck"><input '+prcheckstr+' data-q = "OT" data-cc = "'+all_uploads[i].country_code+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "OT" data-cc = "'+all_uploads[i].country_code+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
                     }
                     else
                     {    
@@ -249,7 +249,7 @@
                             prcheckstr = 'checked';
                         if(packchecked)
                             pacheckstr = 'checked';
-                        table += '<tbody><tr class="success"><td>OTi</td><td class = "prcheck"><input '+prcheckstr+' data-q = "OTi" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "OTi" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
+                        table += '<tbody><tr class="success"><td>OTi</td><td class = "prcheck"><input '+prcheckstr+' data-q = "OTi" data-cc = "'+all_uploads[i].country_code+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "OTi" data-cc = "'+all_uploads[i].country_code+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
                     }
                     else
                     {    
@@ -266,7 +266,7 @@
                             prcheckstr = 'checked';
                         if(packchecked)
                             pacheckstr = 'checked';
-                        table += '<tbody><tr class="success"><td>G</td><td class = "prcheck"><input '+prcheckstr+' data-q = "G" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "G" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
+                        table += '<tbody><tr class="success"><td>G</td><td class = "prcheck"><input '+prcheckstr+' data-q = "G" data-cc = "'+all_uploads[i].country_code+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "G" data-cc = "'+all_uploads[i].country_code+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
                     }
                     else
                     {    

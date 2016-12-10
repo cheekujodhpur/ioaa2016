@@ -1758,15 +1758,19 @@ app.post('/request_fb_leader',function(req,res)
 			    return 0;
 		    }
             console.log("Connection established to the server at mongodb://localhost:27017/test in response to " + ip.toString());
-		    var fbs = db.collection('fbs');
-		    fbs.find({qno:current,"ip":ip}).toArray(function(err,feeds)
-		    {
-                var result = {};
-                result['feeds'] = feeds;
-                res.json(result);
-                console.log("Response to '/request_fb' sent in response to request from " + ip.toString());  
-			    db.close();
-		    });
+			var fbs = db.collection('fbs');
+            var users = db.collection('users');
+            users.find({"ip":ip}).toArray(function(err,result){
+                var country_code = result[0].country_code;
+                fbs.find({qno:current,"country_code":country_code}).toArray(function(err,feeds)
+                {
+                    var result = {};
+                    result['feeds'] = feeds;
+                    res.json(result);
+                    console.log("Response to '/request_fb' sent in response to request from " + ip.toString());  
+                    db.close();
+                });
+            });
 		});
     });
 });
@@ -2809,7 +2813,7 @@ io.on('connection',function(socket)
     
     //flag stuff
     //packed and printed
-    socket.on('flagPrint',function(val,type,ipi){
+    socket.on('flagPrint',function(val,type,cc){
 		
         if(socket.handshake.address != null)
         {
@@ -2833,10 +2837,10 @@ io.on('connection',function(socket)
             var query = {};
             var field = type + '_printed';
             query[field] = val;
-		    users.update({"ip":ipi},{$set:query},function(err,result){db.close();});
+		    users.update({"country_code":cc},{$set:query},function(err,result){db.close();});
         });
     });
-    socket.on('flagPack',function(val,type,ipi){
+    socket.on('flagPack',function(val,type,cc){
 		
         if(socket.handshake.address != null)
         {
@@ -2860,7 +2864,7 @@ io.on('connection',function(socket)
             var query = {};
             var field = type + '_packed';
             query[field] = val;
-		    users.update({"ip":ipi},{$set:query},function(err,result){db.close();});
+		    users.update({"country_code":cc},{$set:query},function(err,result){db.close();});
         });
     });
     //flag stuff END

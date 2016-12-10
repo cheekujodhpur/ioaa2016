@@ -2813,7 +2813,7 @@ io.on('connection',function(socket)
     
     //flag stuff
     //packed and printed
-    socket.on('flagPrint',function(val,type,ipi){
+    socket.on('flagPrint',function(val,type,cc){
 		
         if(socket.handshake.address != null)
         {
@@ -2837,10 +2837,10 @@ io.on('connection',function(socket)
             var query = {};
             var field = type + '_printed';
             query[field] = val;
-		    users.update({"ip":ipi},{$set:query},function(err,result){db.close();});
+		    users.update({"country_code":cc},{$set:query},function(err,result){db.close();});
         });
     });
-    socket.on('flagPack',function(val,type,ipi){
+    socket.on('flagPack',function(val,type,cc){
 		
         if(socket.handshake.address != null)
         {
@@ -2864,7 +2864,7 @@ io.on('connection',function(socket)
             var query = {};
             var field = type + '_packed';
             query[field] = val;
-		    users.update({"ip":ipi},{$set:query},function(err,result){db.close();});
+		    users.update({"country_code":cc},{$set:query},function(err,result){db.close();});
         });
     });
     //flag stuff END
