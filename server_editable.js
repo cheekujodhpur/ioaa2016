@@ -2864,4 +2864,11 @@ io.on('connection',function(socket)
         });
     });
     //flag stuff END
+
+    //super reresh
+    /* Listen Baby Groot, Do not press the button */
+    socket.on('super_refresh',function()
+    {
+        io.sockets.emit("super_refresh");
+    });
 });
