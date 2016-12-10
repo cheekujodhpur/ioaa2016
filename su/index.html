@@ -199,12 +199,13 @@
                         <thead>
                         <tr>
                             <th width = "100px">Country Code</th>
-                            <th width = "100px">TOC</th>
-                            <th width = "100px">E2</th>
-                            <th width = "100px">TOC-Ans</th>
-                            <th width = "100px">E2-Ans</th>
-                            <th width = "200px">Cover Pg1</th>
-                            <th width = "200px">Cover Pg2</th>
+                            <th width = "100px">OP</th>
+                            <th width = "100px">OPi</th>
+                            <th width = "100px">OM</th>
+                            <th width = "100px">OMi</th>
+                            <th width = "100px">OT</th>
+                            <th width = "100px">OTi</th>
+                            <th width = "100px">G</th>
                         </tr>
                         </thead>    
                         <tbody id="all_uploads_table_body">
@@ -648,28 +649,33 @@
                 var table = '';
                 var users_logged = 0;
                 var num_votes = 0;
-                var TOC_u = 0;
-                var TOC_pr = 0;
-                var TOC_pck = 0;
-                var E2_u = 0;
-                var E2_pr = 0;
-                var E2_pck = 0;
-                var E1a_u = 0;
-                var E1a_pr = 0;
-                var E1a_pck = 0;
-                var E2a_u = 0;
-                var E2a_pr = 0;
-                var E2a_pck = 0;
-                var C1_u = 0;
-                var C1_pr = 0;
-                var C1_pck = 0;
-                var C2_u = 0;
-                var C2_pr = 0;
-                var C2_pck = 0;
+                var OP_u = 0;
+                var OP_pr = 0;
+                var OP_pck = 0;
+                var OPi_u = 0;
+                var OPi_pr = 0;
+                var OPi_pck = 0;
+                var OM_u = 0;
+                var OM_pr = 0;
+                var OM_pck = 0;
+                var OMi_u = 0;
+                var OMi_pr = 0;
+                var OMi_pck = 0;
+                var OT_u = 0;
+                var OT_pr = 0;
+                var OT_pck = 0;
+                var OTi_u = 0;
+                var OTi_pr = 0;
+                var OTi_pck = 0;
+                var G_u = 0;
+                var G_pr = 0;
+                var G_pck = 0;
+
                 for(var i in all_uploads)
                 {
                     if(all_uploads[i].country_code != "NULL" && all_uploads[i].country_code!='')
                     { 
+    
                         if(all_uploads[i].logged)
                         {
                             table += '<tr><td><button type="button" class = "btn btn-primary">' + all_uploads[i].country_code + '(' + all_uploads[i].number_of_votes + ')' + '</button></td>';
@@ -680,167 +686,198 @@
                         {
                             table += '<tr><td><button type="button" class = "btn btn-info">' + all_uploads[i].country_code + '</button></td>';
                         }
-                        if(all_uploads[i].TOC)
+
+                        if(all_uploads[i].OP)
                         {
-                            if(all_uploads[i].TOC_printed && all_uploads[i].TOC_packed)
+                            if(all_uploads[i].OP_printed && all_uploads[i].OP_packed)
                             {
-                                table += '<td><button type="button" class="btn btn-success">TOC</button></td>';
-                                TOC_u += 1;
-                                TOC_pr += 1;
-                                TOC_pck += 1;
+                                table += '<td><button type="button" class="btn btn-success">OP</button></td>';
+                                OP_u += 1;
+                                OP_pr += 1;
+                                OP_pck += 1;
                             }
-                            else if(all_uploads[i].TOC_printed) 
+                            else if(all_uploads[i].OP_printed) 
                             { 
-                                table += '<td><button type="button" class="btn btn-primary">TOC</button></td>';
-                                TOC_u += 1;
-                                TOC_pr += 1;
+                                table += '<td><button type="button" class="btn btn-primary">OP</button></td>';
+                                OP_u += 1;
+                                OP_pr += 1;
                             }
                             else
                             {
-                                table += '<td><button type="button" class="btn btn-warning">TOC</button></td>';
-                                TOC_u += 1;
+                                table += '<td><button type="button" class="btn btn-warning">OP</button></td>';
+                                OP_u += 1;
                             }
                         }
                         else
                         {   
-                            table += '<td><button type="button" class="btn btn-danger">TOC</button></td>';
+                            table += '<td><button type="button" class="btn btn-danger">OP</button></td>';
                         }
-                        if(all_uploads[i].E2)
+                        if(all_uploads[i].OPi)
                         {
-                            if(all_uploads[i].E2_printed && all_uploads[i].E2_packed)
+                            if(all_uploads[i].OPi_printed && all_uploads[i].OPi_packed)
                             {
-                                table += '<td><button type="button" class="btn btn-success">E-2</button></td>';
-                                E2_u += 1;
-                                E2_pr += 1;
-                                E2_pck += 1;
+                                table += '<td><button type="button" class="btn btn-success">OPi</button></td>';
+                                OPi_u += 1;
+                                OPi_pr += 1;
+                                OPi_pck += 1;
                             }
-                            else if(all_uploads[i].E2_printed) 
+                            else if(all_uploads[i].OPi_printed) 
                             { 
-                                table += '<td><button type="button" class="btn btn-primary">E-2</button></td>';
-                                E2_u += 1;
-                                E2_pr += 1;
+                                table += '<td><button type="button" class="btn btn-primary">OPi</button></td>';
+                                OPi_u += 1;
+                                OPi_pr += 1;
                             }
                             else
                             {
-                                table += '<td><button type="button" class="btn btn-warning">E-2</button></td>';
-                                E2_u += 1;
+                                table += '<td><button type="button" class="btn btn-warning">OPi</button></td>';
+                                OPi_u += 1;
                             }
                         }
                         else
                         {   
-                            table += '<td><button type="button" class="btn btn-danger">E-2</button></td>';
+                            table += '<td><button type="button" class="btn btn-danger">OPi</button></td>';
                         }
-                        if(all_uploads[i].E1a)
+
+
+                        if(all_uploads[i].OM)
                         {
-                            if(all_uploads[i].E1a_printed && all_uploads[i].E1a_packed)
+                            if(all_uploads[i].OM_printed && all_uploads[i].OM_packed)
                             {
-                                table += '<td><button type="button" class="btn btn-success">E-1 Ans</button></td>';
-                                E1a_u += 1;
-                                E1a_pr += 1;
-                                E1a_pck += 1;
+                                table += '<td><button type="button" class="btn btn-success">OM</button></td>';
+                                OM_u += 1;
+                                OM_pr += 1;
+                                OM_pck += 1;
                             }
-                            else if(all_uploads[i].E1a_printed) 
+                            else if(all_uploads[i].OM_printed) 
                             { 
-                                table += '<td><button type="button" class="btn btn-primary">E-1 Ans</button></td>';
-                                E1a_u += 1;
-                                E1a_pr += 1;
+                                table += '<td><button type="button" class="btn btn-primary">OM</button></td>';
+                                OM_u += 1;
+                                OM_pr += 1;
                             }
                             else
                             {
-                                table += '<td><button type="button" class="btn btn-warning">E-1 Ans</button></td>';
-                                E1a_u += 1;
+                                table += '<td><button type="button" class="btn btn-warning">OM</button></td>';
+                                OM_u += 1;
                             }
                         }
                         else
                         {   
-                            table += '<td><button type="button" class="btn btn-danger">E-1 Ans</button></td>';
+                            table += '<td><button type="button" class="btn btn-danger">OM</button></td>';
                         }
-                        if(all_uploads[i].E2a)
+                        if(all_uploads[i].OMi)
                         {
-                            if(all_uploads[i].E2a_printed && all_uploads[i].E2a_packed)
+                            if(all_uploads[i].OMi_printed && all_uploads[i].OMi_packed)
                             {
-                                table += '<td><button type="button" class="btn btn-success">E-2 Ans</button></td>';
-                                E2a_u += 1;
-                                E2a_pr += 1;
-                                E2a_pck += 1;
+                                table += '<td><button type="button" class="btn btn-success">OMi</button></td>';
+                                OMi_u += 1;
+                                OMi_pr += 1;
+                                OMi_pck += 1;
                             }
-                            else if(all_uploads[i].E2a_printed) 
+                            else if(all_uploads[i].OMi_printed) 
                             { 
-                                table += '<td><button type="button" class="btn btn-primary">E-2 Ans</button></td>';
-                                E2a_u += 1;
-                                E2a_pr += 1;
+                                table += '<td><button type="button" class="btn btn-primary">OMi</button></td>';
+                                OMi_u += 1;
+                                OMi_pr += 1;
                             }
                             else
                             {
-                                table += '<td><button type="button" class="btn btn-warning">E-2 Ans</button></td>';
-                                E2a_u += 1;
+                                table += '<td><button type="button" class="btn btn-warning">OMi</button></td>';
+                                OMi_u += 1;
                             }
                         }
                         else
                         {   
-                            table += '<td><button type="button" class="btn btn-danger">E-2 Ans</button></td>';
+                            table += '<td><button type="button" class="btn btn-danger">OMi</button></td>';
                         }
-                        if(all_uploads[i].C1)
+
+                        if(all_uploads[i].OT)
                         {
-                            if(all_uploads[i].C1_printed && all_uploads[i].C1_packed)
+                            if(all_uploads[i].OT_printed && all_uploads[i].OT_packed)
                             {
-                                table += '<td><button type="button" class="btn btn-success">Cover Page 1</button></td>';
-                                C1_u += 1;
-                                C1_pr += 1;
-                                C1_pck += 1;
+                                table += '<td><button type="button" class="btn btn-success">OT</button></td>';
+                                OT_u += 1;
+                                OT_pr += 1;
+                                OT_pck += 1;
                             }
-                            else if(all_uploads[i].C1_printed) 
+                            else if(all_uploads[i].OT_printed) 
                             { 
-                                table += '<td><button type="button" class="btn btn-primary">Cover Page 1</button></td>';
-                                C1_u += 1;
-                                C1_pr += 1;
+                                table += '<td><button type="button" class="btn btn-primary">OT</button></td>';
+                                OT_u += 1;
+                                OT_pr += 1;
                             }
                             else
                             {
-                                table += '<td><button type="button" class="btn btn-warning">Cover Page 1</button></td>';
-                                C1_u += 1;
+                                table += '<td><button type="button" class="btn btn-warning">OT</button></td>';
+                                OT_u += 1;
                             }
                         }
                         else
                         {   
-                            table += '<td><button type="button" class="btn btn-danger">Cover Page 1</button></td>';
+                            table += '<td><button type="button" class="btn btn-danger">OT</button></td>';
                         }
-                        if(all_uploads[i].C2)
+                        if(all_uploads[i].OTi)
                         {
-                            if(all_uploads[i].C2_printed && all_uploads[i].C2_packed)
+                            if(all_uploads[i].OTi_printed && all_uploads[i].OTi_packed)
                             {
-                                table += '<td><button type="button" class="btn btn-success">Cover Page 2</button></td>';
-                                C2_u += 1;
-                                C2_pr += 1;
-                                C2_pck += 1;
+                                table += '<td><button type="button" class="btn btn-success">OTi</button></td>';
+                                OTi_u += 1;
+                                OTi_pr += 1;
+                                OTi_pck += 1;
                             }
-                            else if(all_uploads[i].C2_printed) 
+                            else if(all_uploads[i].OTi_printed) 
                             { 
-                                table += '<td><button type="button" class="btn btn-primary">Cover Page 2</button></td>';
-                                C2_u += 1;
-                                C2_pr += 1;
+                                table += '<td><button type="button" class="btn btn-primary">OTi</button></td>';
+                                OTi_u += 1;
+                                OTi_pr += 1;
                             }
                             else
                             {
-                                table += '<td><button type="button" class="btn btn-warning">Cover Page 2</button></td>';
-                                C2_u += 1;
+                                table += '<td><button type="button" class="btn btn-warning">OTi</button></td>';
+                                OTi_u += 1;
                             }
                         }
                         else
                         {   
-                            table += '<td><button type="button" class="btn btn-danger">Cover Page 2</button></td>';
+                            table += '<td><button type="button" class="btn btn-danger">OTi</button></td>';
                         }
-                        table += '</tr>';
-                    } 
+
+                        if(all_uploads[i].G)
+                        {
+                            if(all_uploads[i].G_printed && all_uploads[i].G_packed)
+                            {
+                                table += '<td><button type="button" class="btn btn-success">G</button></td>';
+                                G_u += 1;
+                                G_pr += 1;
+                                G_pck += 1;
+                            }
+                            else if(all_uploads[i].G_printed) 
+                            { 
+                                table += '<td><button type="button" class="btn btn-primary">G</button></td>';
+                                G_u += 1;
+                                G_pr += 1;
+                            }
+                            else
+                            {
+                                table += '<td><button type="button" class="btn btn-warning">G</button></td>';
+                                G_u += 1;
+                            }
+                        }
+                        else
+                        {   
+                            table += '<td><button type="button" class="btn btn-danger">G</button></td>';
+                        }
+
+                    }
                 }
                 var table_stat = '';
                 table_stat += '<tr><td>Users Logged: ' + users_logged + '<br /> Total Votes: ' + num_votes +' </td>';
-                table_stat += '<td>Uploaded: ' + TOC_u + '<br />Printed: ' + TOC_pr + '<br />Packed: ' + TOC_pck + '</td>';
-                table_stat += '<td>Uploaded: ' + E2_u + '<br />Printed: ' + E2_pr + '<br />Packed: ' + E2_pck + '</td>';
-                table_stat += '<td>Uploaded: ' + E1a_u + '<br />Printed: ' + E1a_pr + '<br />Packed: ' + E1a_pck + '</td>';
-                table_stat += '<td>Uploaded: ' + E2a_u + '<br />Printed: ' + E2a_pr + '<br />Packed: ' + E2a_pck + '</td>';
-                table_stat += '<td>Uploaded: ' + C1_u + '<br />Printed: ' + C1_pr + '<br />Packed: ' + C1_pck + '</td>';
-                table_stat += '<td>Uploaded: ' + C2_u + '<br />Printed: ' + C2_pr + '<br />Packed: ' + C2_pck + '</td></tr>';
+                table_stat += '<td>Uploaded: ' + OP_u + '<br />Printed: ' + OP_pr + '<br />Packed: ' + OP_pck + '</td>';
+                table_stat += '<td>Uploaded: ' + OPi_u + '<br />Printed: ' + OPi_pr + '<br />Packed: ' + OPi_pck + '</td>';
+                table_stat += '<td>Uploaded: ' + OM_u + '<br />Printed: ' + OM_pr + '<br />Packed: ' + OM_pck + '</td>';
+                table_stat += '<td>Uploaded: ' + OMi_u + '<br />Printed: ' + OMi_pr + '<br />Packed: ' + OMi_pck + '</td>';
+                table_stat += '<td>Uploaded: ' + OT_u + '<br />Printed: ' + OT_pr + '<br />Packed: ' + OT_pck + '</td>';
+                table_stat += '<td>Uploaded: ' + OTi_u + '<br />Printed: ' + OTi_pr + '<br />Packed: ' + OTi_pck + '</td>';
+                table_stat += '<td>Uploaded: ' + G_u + '<br />Printed: ' + G_pr + '<br />Packed: ' + G_pck + '</td>';
                 table = table_stat + table;
                 $("#all_uploads_table_body").html(table);
             }); 

@@ -154,104 +154,125 @@
                 {
                 if(all_uploads[i].country_code != "NULL")
                 {
-                table += '<thead><tr><th>' + all_uploads[i].country_code.toString() + '</th><th>Printed</th><th>Packed</th></tr></thead>';
+                    table += '<thead><tr><th>' + all_uploads[i].country_code.toString() + '</th><th>Printed</th><th>Packed</th></tr></thead>';
                     table += "<tbody>";
-                    if(all_uploads[i].TOC)
+
+                    if(all_uploads[i].OP)
                     {
-                        var printchecked = all_uploads[i].TOC_printed;
-                        var packchecked = all_uploads[i].TOC_packed;
+                        var printchecked = all_uploads[i].OP_printed;
+                        var packchecked = all_uploads[i].OP_packed;
                         var prcheckstr = '';
                         var pacheckstr = '';
                         if(printchecked)
                             prcheckstr = 'checked';
                         if(packchecked)
                             pacheckstr = 'checked';
-                        table += '<tbody><tr class="success"><td>E-1</td><td class = "prcheck"><input '+prcheckstr+' data-q = "TOC" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "TOC" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
+                        table += '<tbody><tr class="success"><td>OP</td><td class = "prcheck"><input '+prcheckstr+' data-q = "OP" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "OP" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
                     }
                     else
                     {    
-                        table += '<tr class="warning"><td>E-1</td></tr>';
+                        table += '<tr class="warning"><td>OP</td></tr>';
                     }
-                    if(all_uploads[i].E2)
+                    if(all_uploads[i].OPi)
                     {
-                        var printchecked = all_uploads[i].E2_printed;
-                        var packchecked = all_uploads[i].E2_packed;
+                        var printchecked = all_uploads[i].OPi_printed;
+                        var packchecked = all_uploads[i].OPi_packed;
                         var prcheckstr = '';
                         var pacheckstr = '';
                         if(printchecked)
                             prcheckstr = 'checked';
                         if(packchecked)
                             pacheckstr = 'checked';
-                        table += '<tbody><tr class="success"><td>E-1</td><td class = "prcheck"><input '+prcheckstr+' data-q = "E2" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "E2" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
+                        table += '<tbody><tr class="success"><td>OPi</td><td class = "prcheck"><input '+prcheckstr+' data-q = "OPi" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "OPi" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
                     }
                     else
                     {    
-                        table += '<tr class="warning"><td>E-2</td></tr>';
+                        table += '<tr class="warning"><td>OPi</td></tr>';
                     }
-                    if(all_uploads[i].E1a)
+
+                    if(all_uploads[i].OM)
                     {
-                        var printchecked = all_uploads[i].E1a_printed;
-                        var packchecked = all_uploads[i].E1a_packed;
+                        var printchecked = all_uploads[i].OM_printed;
+                        var packchecked = all_uploads[i].OM_packed;
                         var prcheckstr = '';
                         var pacheckstr = '';
                         if(printchecked)
                             prcheckstr = 'checked';
                         if(packchecked)
                             pacheckstr = 'checked';
-                        table += '<tbody><tr class="success"><td>E-1 Ans</td><td class = "prcheck"><input '+prcheckstr+' data-q = "E1a" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "E1a" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
+                        table += '<tbody><tr class="success"><td>OM</td><td class = "prcheck"><input '+prcheckstr+' data-q = "OM" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "OM" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
                     }
                     else
                     {    
-                        table += '<tr class="warning"><td>E-1 Ans</td></tr>';
+                        table += '<tr class="warning"><td>OM</td></tr>';
                     }
-                    if(all_uploads[i].E2a)
+                    if(all_uploads[i].OMi)
                     {
-                        var printchecked = all_uploads[i].E2a_printed;
-                        var packchecked = all_uploads[i].E2a_packed;
+                        var printchecked = all_uploads[i].OMi_printed;
+                        var packchecked = all_uploads[i].OMi_packed;
                         var prcheckstr = '';
                         var pacheckstr = '';
                         if(printchecked)
                             prcheckstr = 'checked';
                         if(packchecked)
                             pacheckstr = 'checked';
-                        table += '<tbody><tr class="success"><td>E-2 Ans</td><td class = "prcheck"><input '+prcheckstr+' data-q = "E2a" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "E2a" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
+                        table += '<tbody><tr class="success"><td>OMi</td><td class = "prcheck"><input '+prcheckstr+' data-q = "OMi" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "OMi" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
                     }
                     else
                     {    
-                        table += '<tr class="warning"><td>E-2 Ans</td></tr>';
+                        table += '<tr class="warning"><td>OMi</td></tr>';
                     }
-                    if(all_uploads[i].C1)
+
+                    if(all_uploads[i].OT)
                     {
-                        var printchecked = all_uploads[i].C1_printed;
-                        var packchecked = all_uploads[i].C1_packed;
+                        var printchecked = all_uploads[i].OT_printed;
+                        var packchecked = all_uploads[i].OT_packed;
                         var prcheckstr = '';
                         var pacheckstr = '';
                         if(printchecked)
                             prcheckstr = 'checked';
                         if(packchecked)
                             pacheckstr = 'checked';
-                        table += '<tbody><tr class="success"><td>Cover Page 1</td><td class = "prcheck"><input '+prcheckstr+' data-q = "C1" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "C1" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
+                        table += '<tbody><tr class="success"><td>OT</td><td class = "prcheck"><input '+prcheckstr+' data-q = "OT" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "OT" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
                     }
                     else
                     {    
-                        table += '<tr class="warning"><td>Cover Page 1</td></tr>';
+                        table += '<tr class="warning"><td>OT</td></tr>';
                     }
-                    if(all_uploads[i].C2)
+                    if(all_uploads[i].OTi)
                     {
-                        var printchecked = all_uploads[i].C2_printed;
-                        var packchecked = all_uploads[i].C2_packed;
+                        var printchecked = all_uploads[i].OTi_printed;
+                        var packchecked = all_uploads[i].OTi_packed;
                         var prcheckstr = '';
                         var pacheckstr = '';
                         if(printchecked)
                             prcheckstr = 'checked';
                         if(packchecked)
                             pacheckstr = 'checked';
-                        table += '<tbody><tr class="success"><td>Cover Page 2</td><td class = "prcheck"><input '+prcheckstr+' data-q = "C2" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "C2" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
+                        table += '<tbody><tr class="success"><td>OTi</td><td class = "prcheck"><input '+prcheckstr+' data-q = "OTi" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "OTi" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
                     }
                     else
                     {    
-                        table += '<tr class="warning"><td>Cover Page 2</td></tr>';
+                        table += '<tr class="warning"><td>OTi</td></tr>';
                     }
+
+                    if(all_uploads[i].G)
+                    {
+                        var printchecked = all_uploads[i].G_printed;
+                        var packchecked = all_uploads[i].G_packed;
+                        var prcheckstr = '';
+                        var pacheckstr = '';
+                        if(printchecked)
+                            prcheckstr = 'checked';
+                        if(packchecked)
+                            pacheckstr = 'checked';
+                        table += '<tbody><tr class="success"><td>G</td><td class = "prcheck"><input '+prcheckstr+' data-q = "G" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPrinted(this)" name = "printed" type = "checkbox" /></td><td class = "prcheck"><input '+pacheckstr+' data-q = "G" data-ip = "'+all_uploads[i].ip.toString()+'" onclick = "sendPacked(this)" name = "packed" type = "checkbox" /></td></tr>';
+                    }
+                    else
+                    {    
+                        table += '<tr class="warning"><td>G</td></tr>';
+                    }
+
                     table += "</tbody>";
                 }
                 }
